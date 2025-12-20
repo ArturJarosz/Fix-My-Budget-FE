@@ -1,13 +1,22 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TransactionsListComponent} from "./transactions-list/transactions-list.component";
+import {TableModule} from "primeng/table";
+import {Button} from "primeng/button";
+import {Tag} from "primeng/tag";
 
 @NgModule({
     declarations: [
         TransactionsListComponent
     ],
+    exports: [
+        TransactionsListComponent
+    ],
     imports: [
-        CommonModule
+        CommonModule,
+        TableModule,
+        Button,
+        Tag
     ]
 })
 export class TransactionsModule {

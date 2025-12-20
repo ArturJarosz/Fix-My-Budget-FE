@@ -12,6 +12,9 @@ import {Avatar, AvatarModule} from "primeng/avatar";
 import {CommonModule} from '@angular/common';
 import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
+import {TransactionsModule} from "./core/transactions/transactions.module";
+import { HttpClientModule } from '@angular/common/http';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -26,7 +29,14 @@ import {InputTextModule} from "primeng/inputtext";
         FormsModule,
         Avatar,
         CommonModule,
-        AvatarModule, ButtonModule, IconFieldModule, InputIconModule, InputTextModule
+        AvatarModule,
+        ButtonModule,
+        IconFieldModule,
+        InputIconModule,
+        InputTextModule,
+        TransactionsModule,
+        HttpClientModule,
+        GraphQLModule
     ],
     providers: [
         providePrimeNG({

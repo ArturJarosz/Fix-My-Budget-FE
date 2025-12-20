@@ -11,14 +11,11 @@ export class AppComponent {
     search: string = '';
     selectedNav: string = 'Home';
     navs = signal([
-        { label: 'Home', icon: 'pi pi-home' },
-        { label: 'Bookmark', icon: 'pi pi-bookmark' },
-        { label: 'Users', icon: 'pi pi-users' },
-        { label: 'Comments', icon: 'pi pi-comments' },
-        { label: 'Calendar', icon: 'pi pi-calendar' }
+        {label: 'Home', icon: 'pi pi-list-check'},
+        {label: 'Categories', icon: 'pi pi-tags'},
     ]);
     bottomNavs = signal([
-        { label: 'Question', icon: 'pi pi-question-circle' },
-        { label: 'Settings', icon: 'pi pi-cog' }
+        {label: 'Question', icon: 'pi pi-question-circle'},
+        {label: 'Settings', icon: 'pi pi-cog'}
     ]);
 }
