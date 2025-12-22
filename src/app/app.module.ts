@@ -15,6 +15,9 @@ import {InputTextModule} from "primeng/inputtext";
 import {TransactionsModule} from "./core/transactions/transactions.module";
 import { HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
+import {BankStatementModule} from "./core/bank-statement/bank-statement.module";
+import {Tooltip} from "primeng/tooltip";
+import {CoreModule} from "./core/core.module";
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -35,8 +38,11 @@ import { GraphQLModule } from './graphql.module';
         InputIconModule,
         InputTextModule,
         TransactionsModule,
+        BankStatementModule,
         HttpClientModule,
-        GraphQLModule
+        GraphQLModule,
+        Tooltip,
+        CoreModule
     ],
     providers: [
         providePrimeNG({

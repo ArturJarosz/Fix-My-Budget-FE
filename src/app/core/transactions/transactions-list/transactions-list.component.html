@@ -1,4 +1,4 @@
-<div>
+<div class="p-6 flex gap-8 bg-surface-0 light:bg-surface-950">
     <p-table [value]="$transactions()" stripedRows
              [tableStyle]="{'min-width': '50rem; max-height: 50%'}"
              [paginator]="true"
@@ -7,7 +7,7 @@
              [showCurrentPageReport]="true"
              [currentPageReportTemplate]="'{first} to {last} of {totalRecords}'"
              [scrollable]="true"
-             scrollHeight="800px"
+             scrollHeight="1000px"
              class="font-medium">
         <ng-template pTemplate="header">
             <tr>

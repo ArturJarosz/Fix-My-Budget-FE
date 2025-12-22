@@ -4,6 +4,7 @@ import {TransactionsListComponent} from "./transactions-list/transactions-list.c
 import {TableModule} from "primeng/table";
 import {Button} from "primeng/button";
 import {Tag} from "primeng/tag";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
     declarations: [
@@ -16,7 +17,10 @@ import {Tag} from "primeng/tag";
         CommonModule,
         TableModule,
         Button,
-        Tag
+        Tag,
+        RouterModule.forChild([
+            {path: 'transactions', component: TransactionsListComponent}
+        ])
     ]
 })
 export class TransactionsModule {
