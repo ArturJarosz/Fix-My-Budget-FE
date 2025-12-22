@@ -22,7 +22,6 @@ export class BankStatementRestServiceImpl extends BankStatementRestService {
         formData.append('file', uploadBankStatement.file);
         formData.append('bank', uploadBankStatement.bank);
         formData.append('source', uploadBankStatement.source);
-        console.log("upladin file rest service");
         return this.httpClient.post(this.uploadBankStatementUrl, formData)
             .pipe(
                 catchError(error => throwError("Error uploading file " + error)),

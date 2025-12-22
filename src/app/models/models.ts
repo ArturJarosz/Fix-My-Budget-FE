@@ -49,6 +49,11 @@ export interface ApplicationConfiguration {
     banks: string[];
 }
 
+export interface FileResponse {
+    fileName: string;
+    blob: Blob;
+}
+
 
 
 
