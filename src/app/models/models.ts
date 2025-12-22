@@ -39,6 +39,16 @@ export interface OverrideCategory {
     category: string;
 }
 
+export interface UploadBankStatement {
+    file: File;
+    bank: string;
+    source: string;
+}
+
+export interface ApplicationConfiguration {
+    banks: string[];
+}
+
 
 
 

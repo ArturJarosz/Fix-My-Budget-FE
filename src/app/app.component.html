@@ -2,46 +2,37 @@
     <div class="p-6 bg-surface-50 light:bg-surface-900 rounded-2xl border border-surface-100 light:border-surface-700 flex flex-col w-24">
         <div class="flex justify-center">
         </div>
-
         <div class="flex-1 flex flex-col items-center py-6">
             <nav class="flex flex-col items-center gap-4">
                 @for (item of navs(); track item.label) {
-                    <button
+                    <button pTooltip="{{ item.label }}"
+                            [routerLink]="item.routerLink"
                             [ngClass]="
                                     selectedNav === item.label
                                         ? 'bg-surface-0 light:bg-surface-950 text-surface-900 light:text-surface-0 border-surface-200 light:border-surface-700'
                                         : 'bg-transparent border-transparent text-surface-600 light:text-surface-500'
-                                "
-                            class="w-10 h-10 flex items-center justify-center rounded-lg border hover:bg-surface-0 light:hover:bg-surface-950 hover:text-surface-900 light:hover:text-surface-0 hover:border-surface-200 light:hover:border-surface-700 transition-all cursor-pointer"
-                            (click)="selectedNav = item.label"
-                    >
+                                " class="w-10 h-10 flex items-center justify-center rounded-lg border hover:bg-surface-0 light:hover:bg-surface-950 hover:text-surface-900 light:hover:text-surface-0 hover:border-surface-200 light:hover:border-surface-700 transition-all cursor-pointer"
+                            (click)="selectedNav = item.label">
                         <i [class]="item.icon" class="text-xl! leading-normal!"></i>
                     </button>
                 }
             </nav>
         </div>
-
         <div class="flex flex-col items-center gap-4 mt-auto">
             @for (item of bottomNavs(); track item.label) {
                 <button
                         [ngClass]="
                                 selectedNav === item.label
                                     ? 'bg-surface-0 light:bg-surface-950 text-surface-900 light:text-surface-0 border-surface-200 light:border-surface-700'
-                                    : 'bg-transparent border-transparent text-surface-600 light:text-surface-500'
-                            "
+                                    : 'bg-transparent border-transparent text-surface-600 light:text-surface-500'                            "
                         class="w-10 h-10 flex items-center justify-center rounded-lg border hover:bg-surface-0 light:hover:bg-surface-950 hover:text-surface-900 light:hover:text-surface-0 hover:border-surface-200 light:hover:border-surface-700 transition-all cursor-pointer"
-                        (click)="selectedNav = item.label"
-                >
+                        (click)="selectedNav = item.label">
                     <i [class]="item.icon" class="text-xl! leading-normal!"></i>
                 </button>
             }
-
             <div class="w-full h-px bg-surface-200 light:bg-surface-700 my-4"></div>
-
-            <p-avatar image="https://fqjltiegiezfetthbags.supabase.co/storage/v1/render/image/public/block.images/blocks/avatars/avatar-amyels.png" class="w-10! h-10! cursor-pointer" shape="circle"></p-avatar>
         </div>
     </div>
-
     <div class="min-h-screen overflow-auto flex-1 flex flex-col gap-8 transition-all px-2">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between py-6 gap-4">
             <div>
@@ -59,10 +50,10 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 flex-1 md:flex-row flex-col">
             <div class="flex-1 col-span-3 md:col-span-3 border-2 border-dashed border-surface-200 light:border-surface-700 rounded-2xl bg-surface-50 light:bg-surface-800">
-                <transactions-list></transactions-list>
+                <router-outlet></router-outlet>
             </div>
         </div>
     </div>
 </div>
 
-<router-outlet></router-outlet>
+

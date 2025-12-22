@@ -11,8 +11,9 @@ export class AppComponent {
     search: string = '';
     selectedNav: string = 'Home';
     navs = signal([
-        {label: 'Home', icon: 'pi pi-list-check'},
-        {label: 'Categories', icon: 'pi pi-tags'},
+        {label: 'Transaction', icon: 'pi pi-list-check', routerLink: '/transactions'},
+        {label: 'Categories', icon: 'pi pi-tags', routerLink: '/categories'},
+        {label: 'File upload', icon: 'pi pi-upload', routerLink: 'bank-statement/upload'}
     ]);
     bottomNavs = signal([
         {label: 'Question', icon: 'pi pi-question-circle'},
