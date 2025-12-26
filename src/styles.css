@@ -2,3 +2,10 @@
 @import 'tailwindcss-primeui';
 @import 'tailwindcss';
 @import "primeicons/primeicons.css";
+
+:root {
+    --p-treetable-body-cell-padding: 0.20rem 0.75rem !important;
+    --p-chip-padding-y: 0.5rem !important;
+    --p-chip-padding-x: 0.5rem !important;
+    --p-fieldset-padding: 0 1rem 1rem 1rem !important;
+}

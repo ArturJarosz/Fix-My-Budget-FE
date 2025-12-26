@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {ConfigurationRestService, ConfigurationRestServiceImpl} from "./configuration/rest/configuration-rest.service";
 import {RouterModule} from "@angular/router";
 import {CategoryScreenComponent} from "./category/category-screen/category-screen.component";
+import {CategoryRestService, CategoryRestServiceImpl} from "./category/rest/category-rest.service";
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import {CategoryScreenComponent} from "./category/category-screen/category-scree
         ])
     ],
     providers: [
-        {provide: ConfigurationRestService, useClass: ConfigurationRestServiceImpl}
+        {provide: ConfigurationRestService, useClass: ConfigurationRestServiceImpl},
+        {provide: CategoryRestService, useClass: CategoryRestServiceImpl}
     ]
 
 })

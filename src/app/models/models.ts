@@ -54,6 +54,34 @@ export interface FileResponse {
     blob: Blob;
 }
 
+export interface Category {
+    name: string;
+    bankName: string;
+    requirements: CategoryRequirement[];
+}
+
+export interface CategoryRequirement {
+    fieldType: string;
+    matchType: string;
+    values: CategoryRequirementValue[];
+}
+
+export interface CategoryRequirementValue {
+    value: string;
+}
+
+export interface CategoriesByBank {
+    [bankName: string]: Category[];
+}
+
+export interface CategoryNode {
+    name?: string;
+    bankName?: string;
+    fieldType?: string;
+    matchType?: string;
+    value?: string;
+}
+
 
 
 

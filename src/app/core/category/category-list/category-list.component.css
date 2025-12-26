@@ -1,0 +1,51 @@
+.text-medium {
+    font-size: 1.0rem;
+}
+
+.chip-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem; /* space between chips; adjust as you like */
+}
+
+/* Make all category tables share the same column widths */
+:host ::ng-deep .category-table table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* 1st column: Type */
+:host ::ng-deep .category-table .p-datatable-thead > tr > th:nth-child(1),
+:host ::ng-deep .category-table .p-datatable-tbody > tr > td:nth-child(1) {
+    width: 20%;
+}
+
+/* 2nd column: Field */
+:host ::ng-deep .category-table .p-datatable-thead > tr > th:nth-child(2),
+:host ::ng-deep .category-table .p-datatable-tbody > tr > td:nth-child(2) {
+    width: 20%;
+}
+
+/* 3rd column: Values */
+:host ::ng-deep .category-table .p-datatable-thead > tr > th:nth-child(3),
+:host ::ng-deep .category-table .p-datatable-tbody > tr > td:nth-child(3) {
+    width: 60%;
+}
+
+.p-accordionheader {
+    padding: 0.25rem !important;
+}
+
+.header-custom {
+    padding: 0.25rem 0.5rem !important;
+}
+
+.row-custom {
+    padding: 0.25rem 0.5rem !important;
+}
+
+p-fieldset-legend {
+    padding: 0.25rem 0.5rem !important;
+}
+
+
