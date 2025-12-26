@@ -1,0 +1,7 @@
+.p-treetable .p-treetable-tbody>tr>td {
+    padding: 0.1rem;
+}
+:root {
+    --p-treetable-footer-cell-padding: 0.1rem;
+}
+

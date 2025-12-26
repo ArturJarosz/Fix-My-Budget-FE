@@ -35,7 +35,6 @@ export class UploadComponent implements OnInit {
     }
 
     protected onUpload($event: FileUploadEvent) {
-        console.log($event.files.length);
         if ($event.files.length > 0) {
             const uploadBankStatement = {
                 file: $event.files[0],

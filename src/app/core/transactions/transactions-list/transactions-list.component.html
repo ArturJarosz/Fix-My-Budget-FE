@@ -1,4 +1,4 @@
-<div class="p-6 flex gap-8 bg-surface-0 light:bg-surface-950">
+<div class="p-4 flex gap-8 bg-surface-0 light:bg-surface-950">
     <p-table [value]="$transactions()" stripedRows
              [tableStyle]="{'min-width': '50rem; max-height: 50%'}"
              [paginator]="true"
@@ -33,7 +33,7 @@
                 </td>
                 <td style="width: 7rem">{{ transaction.transactionDate }}</td>
                 <td>
-                    <p-tag styleclass="font-medium" data-p="success" class="font-medium p-component p-tag p-tag-success" data-pc-section="root" data-pc-name="t">
+                    <p-tag pStyleClass="font-medium" data-p="success" class="font-medium p-component p-tag p-tag-success" data-pc-section="root" data-pc-name="t">
                         <span class="p-tag-label" data-pc-section="label">{{ transaction.category }}</span></p-tag>
                 </td>
                 <td>{{ transaction.details }}</td>

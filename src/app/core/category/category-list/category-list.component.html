@@ -1,0 +1,37 @@
+<div class="text-medium font-light border border-surface rounded-2xl p-4 min-h-80 light:bg-surface-950" style="font-size: 0.9rem">
+    <div *ngFor="let bankEntry of categoriesByBank | keyvalue; let i = index">
+        <p-accordion [value]="i">
+            <p-accordion-panel [value]="i">
+                <p-accordion-header>{{ bankEntry.key }}</p-accordion-header>
+                <p-accordion-content>
+                    <div *ngFor="let category of bankEntry.value">
+                        <p-fieldset legend="{{ category.name }}">
+                            <p-table [value]="category.requirements" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }" styleClass="category-table">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th class="header-custom">Type</th>
+                                        <th class="header-custom">Field</th>
+                                        <th class="header-custom">Values</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-requirement>
+                                    <tr>
+                                        <td class="row-custom">{{ requirement.fieldType }}</td>
+                                        <td class="row-custom">{{ requirement.matchType }}</td>
+                                        <td class="row-custom">
+                                            <div class="chip-container">
+                                                <div *ngFor="let labValue of requirement.values">
+                                                    <p-chip>{{ labValue.value }}</p-chip>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </p-fieldset>
+                    </div>
+                </p-accordion-content>
+            </p-accordion-panel>
+        </p-accordion>
+    </div>
+</div>
