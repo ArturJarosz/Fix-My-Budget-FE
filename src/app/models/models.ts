@@ -18,7 +18,6 @@ export interface BankTransaction {
     recipientAccount?: string;
     source: string;
     transactionHash: string;
-
 }
 
 export interface CategorySummary {

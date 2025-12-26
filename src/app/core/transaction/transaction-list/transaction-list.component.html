@@ -1,6 +1,6 @@
-<div class="p-4 flex gap-8 bg-surface-0 light:bg-surface-950">
-    <p-table [value]="$transactions()" stripedRows
-             [tableStyle]="{'min-width': '50rem; max-height: 50%'}"
+<div class="p-4 flex gap-8 bg-surface-0 light:bg-surface-950 transaction-list-wrapper">
+    <p-table [value]="transactions" stripedRows
+             [tableStyle]="{'width': '100%; max-height: 50%'}"
              [paginator]="true"
              [rows]="25"
              [paginatorPosition]="'bottom'"
@@ -8,16 +8,47 @@
              [currentPageReportTemplate]="'{first} to {last} of {totalRecords}'"
              [scrollable]="true"
              scrollHeight="1000px"
-             class="font-medium">
+             class="font-medium"
+             styleClass="w-full">
         <ng-template pTemplate="header">
             <tr>
-                <th>ID</th>
-                <th>Amount</th>
-                <th>Date</th>
+                <th pSortableColumn>
+                    ID
+                </th>
+                <th pSortableColumn="amount">
+                    <div class="flex items-center gap-2">
+                        Amount
+                        <p-sortIcon field="amount"/>
+                    </div>
+                </th>
+                <th pSortableColumn="transactionDate">
+                    <div class="flex items-center gap-2">
+                        Date
+                        <p-sortIcon field="transactionDate"/>
+                    </div>
+                </th>
                 <th>Category</th>
                 <th>Details</th>
                 <th>Recipient name</th>
                 <th>Sender name</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                    <p-columnFilter type="text" field="category" placeholder="Type to search" ariaLabel="Filter category" filterOn="input" inputStyleClass="tx-filter-input" ></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="details" placeholder="Type to search" ariaLabel="Filter details" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="recipientName" placeholder="Type to search" ariaLabel="Filter recipient" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="senderName" placeholder="Type to search" ariaLabel="Filter sender" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                </th>
+
             </tr>
         </ng-template>
         <ng-template let-transaction pTemplate="body">

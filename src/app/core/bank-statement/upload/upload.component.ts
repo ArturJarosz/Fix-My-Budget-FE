@@ -1,16 +1,25 @@
 import {Component, inject, OnInit, Signal} from '@angular/core';
-import {FileSelectEvent, FileUploadEvent} from "primeng/fileupload";
+import {FileSelectEvent, FileUpload, FileUploadEvent} from "primeng/fileupload";
 import {BankStatementRestService} from "../rest/bank-statement-rest.service";
-import {FormGroup} from "@angular/forms";
+import {FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {BankStatementFormProvider, UpdateBankStatementForm} from "../form/bank-statement-form-provider";
 import {BankStatementStore} from "../state/bank-statement.state";
 import {ConfigurationStore} from "../../configuration/state/configuration.state";
+import {Button} from "primeng/button";
+import {Select} from "primeng/select";
+import {InputText} from "primeng/inputtext";
 
 @Component({
     selector: 'upload',
     templateUrl: './upload.component.html',
-    styleUrl: './upload.component.css',
-    standalone: false
+    imports: [
+        ReactiveFormsModule,
+        FileUpload,
+        Button,
+        Select,
+        InputText
+    ],
+    styleUrl: './upload.component.css'
 })
 export class UploadComponent implements OnInit {
     uploadForm!: FormGroup<UpdateBankStatementForm>;
