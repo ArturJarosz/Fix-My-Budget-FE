@@ -17,6 +17,7 @@ export interface BankTransaction {
     senderAccount?: string;
     recipientAccount?: string;
     source: string;
+    bank: string;
     transactionHash: string;
 }
 

@@ -81,6 +81,8 @@ export const GET_TRANSACTIONS = gql`
             details
             recipientName
             senderName
+            bank
+            source
         }
     }
 `;

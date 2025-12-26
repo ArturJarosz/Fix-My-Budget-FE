@@ -31,6 +31,8 @@
                 <th>Details</th>
                 <th>Recipient name</th>
                 <th>Sender name</th>
+                <th>Bank</th>
+                <th>Source</th>
             </tr>
             <tr>
                 <th></th>
@@ -47,6 +49,12 @@
                 </th>
                 <th>
                     <p-columnFilter type="text" field="senderName" placeholder="Type to search" ariaLabel="Filter sender" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="bank" placeholder="Type to search" ariaLabel="Filter bank" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="source" placeholder="Type to search" ariaLabel="Filter source" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
                 </th>
 
             </tr>
@@ -70,6 +78,8 @@
                 <td>{{ transaction.details }}</td>
                 <td>{{ transaction.recipientName }}</td>
                 <td>{{ transaction.senderName }}</td>
+                <td>{{ transaction.bank }}</td>
+                <td>{{ transaction.source }}</td>
             </tr>
         </ng-template>
     </p-table>
