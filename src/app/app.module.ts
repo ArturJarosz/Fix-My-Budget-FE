@@ -12,7 +12,7 @@ import {Avatar, AvatarModule} from "primeng/avatar";
 import {CommonModule} from '@angular/common';
 import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
-import {TransactionsModule} from "./core/transactions/transactions.module";
+import {TransactionsModule} from "./core/transaction/transactions.module";
 import { HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
 import {BankStatementModule} from "./core/bank-statement/bank-statement.module";

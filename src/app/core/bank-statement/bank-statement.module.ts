@@ -11,7 +11,6 @@ import {provideAnimations} from "@angular/platform-browser/animations";
 import {InputText} from "primeng/inputtext";
 
 @NgModule({
-        declarations: [UploadComponent],
         imports: [
             RouterModule.forChild([
                 {path: 'bank-statement/upload', component: UploadComponent}
