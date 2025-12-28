@@ -6,12 +6,16 @@ import {pipe, switchMap, tap} from "rxjs";
 
 export interface ConfigurationState {
     banks: string[];
+    fieldTypes: string[];
+    matchTypes: string[];
     configurationLoaded: boolean;
 }
 
 export const initialState: ConfigurationState = {
     banks: [],
-    configurationLoaded: false
+    configurationLoaded: false,
+    fieldTypes: [],
+    matchTypes: []
 };
 
 export const ConfigurationStore = signalStore(
@@ -24,7 +28,11 @@ export const ConfigurationStore = signalStore(
                     return configurationRestService.getConfiguration()
                         .pipe(
                             tap(configuration => {
-                                patchState(store, {banks: configuration.banks, configurationLoaded: true})
+                                patchState(store, {
+                                    banks: configuration.banks,
+                                    fieldTypes: configuration.fieldTypes,
+                                    matchTypes: configuration.matchTypes,
+                                    configurationLoaded: true})
                             })
                         )
                     }

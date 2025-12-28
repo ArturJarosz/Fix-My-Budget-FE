@@ -1,8 +1,10 @@
-<div class="text-medium font-light border border-surface rounded-2xl p-4 min-h-80 light:bg-surface-950" style="font-size: 0.9rem">
-    <div *ngFor="let bankEntry of categoriesByBank | keyvalue; let i = index">
+<div
+        class="text-medium font-light border border-surface rounded-2xl p-4 min-h-80 light:bg-surface-950"
+        style="font-size: 0.9rem; min-height: 800px">
+    <div *ngFor="let bankEntry of _categoriesByBank | keyvalue; let i = index">
         <p-accordion [value]="i">
             <p-accordion-panel [value]="i">
-                <p-accordion-header>{{ bankEntry.key }}</p-accordion-header>
+                <p-accordion-header>{{ bankEntry.key }} ({{ bankEntry.value.length }})</p-accordion-header>
                 <p-accordion-content>
                     <div *ngFor="let category of bankEntry.value">
                         <p-fieldset legend="{{ category.name }}">

@@ -1,0 +1,135 @@
+<div class="bg-surface-0 dark:bg-surface-950 px-6 py-20 md:px-12 lg:px-20 flex items-center justify-center">
+    <p-dialog [(visible)]="visible"
+              appendTo="body"
+              [modal]="true" [style]="{width: '50vw', 'max-width': '800px', 'min-height': '300px'}"
+              (onHide)="onClose()">
+        <ng-template pTemplate="header">
+            <div class="flex flex-column gap-2">
+                <h1 class="m-0 text-900 font-semibold line-height-3">Add new category</h1>
+            </div>
+        </ng-template>
+        <div>
+            <form [formGroup]="addCategoryForm">
+                <p-fieldset legend="Basic category data">
+                    <div class="flex flex-col gap-6">
+                        <div class="flex gap-3">
+                            <div class="flex-3">
+                                <label for="name" class="block text-color text-base top-label">Category name</label>
+                                <span class="p-input-icon-left w-full">
+                                <input type="text" class="w-full" id="name" formControlName="name"
+                                       pInputText placeholder="category name"
+                                       [ngClass]="{'is-invalid': (addCategoryForm.get('name')?.touched || addCategoryForm.get('name')?.dirty) && !addCategoryForm.get('name')?.valid }"
+                                />
+                            </span>
+                            </div>
+                            <div class="flex-3">
+                                <label for="bank" class="block text-color text-base top-label">Bank</label>
+                                <span style="width: 100%">
+                                <p-dropdown [options]="banks"
+                                            formControlName="bankName" class="w-full" appendTo="body" id="type">
+                                </p-dropdown>
+                                </span>
+                            </div>
+                            <div class="flex-2">
+                                <label for="bank" class="block text-color text-base top-label">Color</label>
+                                <div class="p-2">
+                                    <p-colorpicker formControlName="color" defaultColor="989898"></p-colorpicker>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2 pt-4">
+                        <div class="flex gap-3">
+                            <div class="flex justify-content-between align-items-center">
+                                <span class="text-color text-base font-medium">Category requirements</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="flex justify-content-between align-items-center">
+                                <p-button styleClass="add-button"
+                                          (click)="addRequirement()">
+                                    + Add requirement
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+                <div class="flex flex-col gap-6">
+                    <div *ngIf="requirements.length === 0" class="text-500 text-sm mt-1">
+                        No requirements yet. Click “Add requirement” to create one.
+                    </div>
+                    <div formArrayName="requirements" class="flex gap-3 flex-col">
+                        <div *ngFor="let req of requirementsControl.controls; let i = index" [formGroupName]="i">
+                            <p-fieldset legend="Requirement {{i+1}}">
+                                <div class="flex gap-3 justify-end">
+                                    <p-button styleClass="remove-button"
+                                              (click)="removeRequirement(i)">
+                                        Remove requirement
+                                    </p-button>
+                                </div>
+                                <div class="flex gap-3">
+                                    <div class="flex-1">
+                                        <label class="block text-color text-sm mb-1">Field</label>
+                                        <p-dropdown
+                                                class="w-full"
+                                                [options]="fieldTypes"
+                                                formControlName="fieldType"
+                                                (onChange)="onFieldTypeChange(i, $event.value)"
+                                                appendTo="body">
+                                        </p-dropdown>
+                                    </div>
+                                    <div class="flex-1">
+                                        <label class="block text-color text-sm mb-1">Match type</label>
+                                        <p-dropdown
+                                                class="w-full"
+                                                [options]="matchTypes"
+                                                formControlName="matchType"
+                                                (onChange)="onMatchTypeChange(i, $event.value)"
+                                                appendTo="body">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex gap-3 pt-3">
+                                        <div class="flex-1 gap-2">
+                                            <label class="block text-color text-sm mb-1">Value</label>
+                                            <input type="text"
+                                                   #inputValue
+                                                   pInputText
+                                                   class="w-full"
+                                                   placeholder="Type a value and press Enter"
+                                                   formArrayName="values"
+                                                   (keydown.enter)="addRequirementValue(i, inputValue.value); inputValue.value = ''; $event.preventDefault();">
+                                        </div>
+                                        <div formArrayName="values" class="flex-2 gap-2">
+                                            <label class="block text-color text-sm mb-1">Value</label>
+                                            <span *ngFor="let value of requirementValuesControl(i).controls; let vi = index"
+                                                  class="inline-flex align-items-center p-1 border-round bg-primary-50 text-primary text-sm chip-parent">
+                                                <span class="chip-text">{{ value.value.value }}</span>
+                                                <button type="button"
+                                                        class="p-button p-button-rounded p-button-text p-button-xs"
+                                                        (click)="removeRequirementValue(i, vi)">
+                                                    ×
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </p-fieldset>
+
+                        </div>
+                    </div>
+                    <div class="flex gap-3 justify-end pt-3">
+                        <p-button styleClass="add-button"
+                                  [disabled]="!isDataCorrect()"
+                                  (click)="onSave()">
+                            Save category
+                        </p-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
+</div>

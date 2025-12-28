@@ -1,9 +1,11 @@
 <div>
     <div class="bg-surface-0 p-4 rounded-2xl flex flex-col gap-4">
-        <category-list [categoriesByBank]="$categoriesByBank()" [categories]="$categories()"></category-list>
-        <div class="border border-surface rounded-2xl p-4 light:bg-surface-950">
-            add new configuration
-        </div>
+        <category-list
+                [categoriesByBank]="$categoriesByBank()"
+                [categories]="$categories()"
+        >
+
+        </category-list>
         <div class="border border-surface rounded-2xl p-4 light:bg-surface-950 flex gap-4">
             <div class="border border-surface rounded-2xl flex-1 p-4 w-full flex flex-col justify-center items-center">
                 <p-button pButton class=" font-medium! rounded-md!" severity="secondary" (onClick)="downloadConfiguration()">
@@ -21,6 +23,21 @@
                     </div>
                 </div>
             </div>
+            <div class="border border-surface rounded-2xl flex-1 p-4  w-full flex flex-col justify-center items-center">
+                <p-button pButton class=" font-medium! rounded-md!" severity="secondary" (onClick)="toggleShowAddCategoryDialog()">
+                    <span pButtonLabel>Add new category</span>
+                </p-button>
+            </div>
         </div>
     </div>
 </div>
+<div>
+    <add-category
+        [visible]="showAddCategoryDialog"
+        [banks]="$banks()"
+        [matchTypes]="$matchTypes()"
+        [fieldTypes]="$fieldTypes()"
+        (notify)="onNotify($event)"></add-category>
+</div>
+
+
