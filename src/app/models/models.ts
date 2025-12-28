@@ -47,6 +47,8 @@ export interface UploadBankStatement {
 
 export interface ApplicationConfiguration {
     banks: string[];
+    fieldTypes: string[];
+    matchTypes: string[];
 }
 
 export interface FileResponse {
@@ -57,6 +59,7 @@ export interface FileResponse {
 export interface Category {
     name: string;
     bankName: string;
+    color: string;
     requirements: CategoryRequirement[];
 }
 

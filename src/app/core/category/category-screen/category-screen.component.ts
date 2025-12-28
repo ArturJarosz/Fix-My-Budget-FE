@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit, Signal} from '@angular/core';
+import {Component, computed, effect, inject, OnInit, Signal} from '@angular/core';
 import {Button, ButtonDirective, ButtonLabel} from "primeng/button";
 import {FileUpload, FileUploadEvent} from "primeng/fileupload";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -15,6 +15,8 @@ import {TreeTableModule} from "primeng/treetable";
 import {TreeNode} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {CategoryListComponent} from "../category-list/category-list.component";
+import {AddCategoryComponent} from "../add-category/add-category.component";
+import {ConfigurationStore} from "../../configuration/state/configuration.state";
 
 @Component({
     selector: 'app-category-screen',
@@ -27,67 +29,56 @@ import {CategoryListComponent} from "../category-list/category-list.component";
         ReactiveFormsModule,
         TreeTableModule,
         TableModule,
-        CategoryListComponent
+        CategoryListComponent,
+        AddCategoryComponent
     ],
     templateUrl: './category-screen.component.html',
     styleUrl: './category-screen.component.css'
 })
 export class CategoryScreenComponent implements OnInit {
+    showAddCategoryDialog = false;
+
     categoryStore = inject(CategoryStore);
+    configurationStore = inject(ConfigurationStore);
 
     $categories: Signal<Category[]> = this.categoryStore.categories;
-    $categoriesByBank: Signal<CategoriesByBank> = this.categoryStore.categoriesByBanks;
+    $categoriesByBank: Signal<CategoriesByBank> = computed(() => {
+        const cats = this.$categories();
+        console.log('Recomputing $categoriesByBank, len:', cats.length);
+
+        return cats.reduce<CategoriesByBank>((acc, category) => {
+            const bank = category.bankName;
+            if (!acc[bank]) {
+                acc[bank] = [];
+            }
+            acc[bank].push(category);
+            return acc;
+        }, {} as CategoriesByBank);
+    });
+    $banks: Signal<string[]> = this.configurationStore.banks;
+    $fieldTypes: Signal<string[]> = this.configurationStore.fieldTypes;
+    $matchTypes: Signal<string[]> = this.configurationStore.matchTypes;
 
     categories: TreeNode<CategoryNode>[] | undefined;
 
-
-    // test
-    banks = [
-        {
-            name: 'Alior',
-            value: 0,
-            children: [
-                {
-                    name: "jedzenie na miescie",
-                    type: "CONTAINS",
-                    field: "description",
-                    values: ["mcdonals", "KFC", "kebab"]
-                }
-            ]
-        },
-        {
-            name: 'ING',
-            value: 1,
-            children: [
-                {
-                    name: "jedzenie na miescie",
-                    type: "CONTAINS",
-                    field: "description",
-                    values: ["mcdonals", "KFC", "kebab"]
-                }
-            ]
-        },
-        {
-            name: 'Santander',
-            value: 2,
-            children: [
-                {
-                    name: "jedzenie na miescie",
-                    type: "CONTAINS",
-                    field: "description",
-                    values: ["mcdonals", "KFC", "kebab"]
-                }
-            ]
-        }];
-
     constructor(private categoryRestService: CategoryRestService) {
+        this.categoryStore.loadCategories({});
         effect(() => {
-            this.categories = this.initTree(this.$categories());
+            const cats = this.$categories();
+            console.log('Screen $categories length:', cats.length);
+            console.log("refreshing categories...")
+            this.categories = this.initTree(cats);
+        });
+
+        effect(() => {
+            const byBank = this.$categoriesByBank();
+            console.log('Screen $categoriesByBank keys:', Object.keys(byBank));
         });
     }
 
     ngOnInit(): void {
         this.categoryStore.loadCategories({});
+        this.configurationStore.loadConfiguration({});
         this.categories = this.initTree(this.$categories());
     }
 
@@ -141,6 +132,11 @@ export class CategoryScreenComponent implements OnInit {
         return {data: value}
     }
 
+    protected toggleShowAddCategoryDialog() {
+        this.showAddCategoryDialog = !this.showAddCategoryDialog;
+    }
 
-    protected readonly JSON = JSON;
+    protected onNotify($event: boolean) {
+        this.showAddCategoryDialog = $event.valueOf();
+    }
 }

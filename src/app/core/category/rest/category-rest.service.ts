@@ -10,6 +10,8 @@ export abstract class CategoryRestService {
     abstract uploadCategoriesFile(file: File): Observable<any>;
 
     abstract getCategories(): Observable<Category[]>;
+
+    abstract createCategory(category: Category): Observable<Category>;
 }
 
 @Injectable()
@@ -51,7 +53,11 @@ export class CategoryRestServiceImpl implements CategoryRestService {
         return this.httpClient.get<Category[]>(this.categoriesUrl);
     }
 
-    getFileName(header: string): string {
+    createCategory(category: Category): Observable<Category> {
+        return this.httpClient.post<Category>(this.categoriesUrl, category);
+    }
+
+    private getFileName(header: string): string {
         let filename = '';
         if (header && header.indexOf('attachment') !== -1) {
             const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
