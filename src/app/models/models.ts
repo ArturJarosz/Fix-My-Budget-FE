@@ -57,6 +57,7 @@ export interface FileResponse {
 }
 
 export interface Category {
+    id?: number | null;
     name: string;
     bankName: string;
     color: string;
@@ -64,12 +65,14 @@ export interface Category {
 }
 
 export interface CategoryRequirement {
+    id?: number | null;
     fieldType: string;
     matchType: string;
     values: CategoryRequirementValue[];
 }
 
 export interface CategoryRequirementValue {
+    id?: number | null;
     value: string;
 }
 

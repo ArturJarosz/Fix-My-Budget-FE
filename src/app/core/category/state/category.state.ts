@@ -4,6 +4,7 @@ import {computed, inject} from "@angular/core";
 import {rxMethod} from "@ngrx/signals/rxjs-interop";
 import {CategoriesByBank, Category} from "../../../models/models";
 import {pipe, switchMap, tap} from "rxjs";
+import {TransactionStore} from "../../transaction/state/transaction.state";
 
 export interface CategoryState {
     categories: Category[];
@@ -29,24 +30,25 @@ export const CategoryStore = signalStore(
             }, {} as CategoriesByBank);
         })
     })),
-    withMethods((store, restService = inject(CategoryRestService)) => {
+    withMethods((store, restService = inject(CategoryRestService), transactionStore = inject(TransactionStore)) => {
         // shared helper: returns an observable that loads and patches categories
         const reloadCategories$ = () =>
-            restService.getCategories().pipe(
-                tap(categoriesFromBackend => {
-                    console.log('Store reloadCategories, len:', categoriesFromBackend.length);
-                    patchState(store, { categories: categoriesFromBackend });
-                })
-            );
+            restService.getCategories()
+                .pipe(
+                    tap(categoriesFromBackend => {
+                        patchState(store, {categories: categoriesFromBackend});
+                    })
+                );
 
         return {
             uploadFile: rxMethod<{ file: File }>(
                 pipe(
-                    switchMap(({ file }) =>
-                        restService.uploadCategoriesFile(file).pipe(
-                            // after upload, reload categories
-                            switchMap(() => reloadCategories$())
-                        )
+                    switchMap(({file}) =>
+                        restService.uploadCategoriesFile(file)
+                            .pipe(
+                                // after upload, reload categories
+                                switchMap(() => reloadCategories$())
+                            )
                     )
                 )
             ),
@@ -57,11 +59,30 @@ export const CategoryStore = signalStore(
 
             createCategory: rxMethod<{ category: Category }>(
                 pipe(
-                    switchMap(({ category }) =>
-                        restService.createCategory(category).pipe(
-                            // after create, reload categories
-                            switchMap(() => reloadCategories$())
-                        )
+                    switchMap(({category}) =>
+                        restService.createCategory(category)
+                            .pipe(
+                                // after create, reload categories
+                                switchMap(() => {
+                                    transactionStore.loadTransactions({});
+                                    return reloadCategories$()
+                                })
+                            )
+                    )
+                )
+            ),
+
+            updateCategory: rxMethod<{ category: Category }>(
+                pipe(
+                    switchMap(({category}) =>
+                        restService.updateCategory(category.id!, category)
+                            .pipe(
+                                // after update, reload categories
+                                switchMap(() => {
+                                    transactionStore.loadTransactions({});
+                                    return reloadCategories$()
+                                })
+                            )
                     )
                 )
             )

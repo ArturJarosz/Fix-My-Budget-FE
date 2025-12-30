@@ -12,6 +12,8 @@ export abstract class CategoryRestService {
     abstract getCategories(): Observable<Category[]>;
 
     abstract createCategory(category: Category): Observable<Category>;
+
+    abstract updateCategory(categoryId: number, category: Category): Observable<Category>;
 }
 
 @Injectable()
@@ -28,19 +30,20 @@ export class CategoryRestServiceImpl implements CategoryRestService {
             headers: {},
             observe: 'response',
             responseType: 'blob' as 'json'
-        }).pipe(
-            map(response => {
-                const contentDisposition = response.headers.get('Content-Disposition');
-                let filename = 'configuration.json';
-                if (contentDisposition) {
-                    filename = this.getFileName(contentDisposition);
-                }
-                return {
-                    fileName: filename,
-                    blob: response.body as Blob
-                } as FileResponse;
-            })
-        );
+        })
+            .pipe(
+                map(response => {
+                    const contentDisposition = response.headers.get('Content-Disposition');
+                    let filename = 'configuration.json';
+                    if (contentDisposition) {
+                        filename = this.getFileName(contentDisposition);
+                    }
+                    return {
+                        fileName: filename,
+                        blob: response.body as Blob
+                    } as FileResponse;
+                })
+            );
     }
 
     uploadCategoriesFile(file: File): Observable<any> {
@@ -55,6 +58,10 @@ export class CategoryRestServiceImpl implements CategoryRestService {
 
     createCategory(category: Category): Observable<Category> {
         return this.httpClient.post<Category>(this.categoriesUrl, category);
+    }
+
+    updateCategory(categoryId: number, category: Category): Observable<Category> {
+        return this.httpClient.post<Category>(`${this.categoriesUrl}/${categoryId}`, category);
     }
 
     private getFileName(header: string): string {

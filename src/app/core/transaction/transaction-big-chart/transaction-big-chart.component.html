@@ -1,1 +1,45 @@
-<p>transaction-big-chart works!</p>
+<p-fieldset legend="Charts" [toggleable]="true">
+    <div class="tb-chart-toolbar">
+        <button
+                pButton
+                label="Years"
+                class="p-button-sm"
+                [outlined]="selectedGrouping !== 'YEARS'"
+                [severity]="selectedGrouping === 'YEARS' ? 'primary' : 'secondary'"
+                (click)="onGroupingChange('YEARS')">
+        </button>
+
+        <button
+                pButton
+                label="Months"
+                class="p-button-sm"
+                [outlined]="selectedGrouping !== 'MONTHS'"
+                [severity]="selectedGrouping === 'MONTHS' ? 'primary' : 'secondary'"
+                (click)="onGroupingChange('MONTHS')">
+        </button>
+
+        <button
+                pButton
+                label="Weeks"
+                class="p-button-sm"
+                [outlined]="selectedGrouping !== 'WEEKS'"
+                [severity]="selectedGrouping === 'WEEKS' ? 'primary' : 'secondary'"
+                (click)="onGroupingChange('WEEKS')">
+        </button>
+    </div>
+
+    <div class="tb-chart-container" *ngIf="chartData?.labels?.length; else noData">
+        <p-chart
+                type="bar"
+                [data]="chartData"
+                [options]="chartOptions"
+                [style]="{width: '100%' }"
+        ></p-chart>
+    </div>
+
+    <ng-template #noData>
+        <div class="tb-chart-empty">
+            No transactions to display.
+        </div>
+    </ng-template>
+</p-fieldset>

@@ -1,39 +1,73 @@
-<div
-        class="text-medium font-light border border-surface rounded-2xl p-4 min-h-80 light:bg-surface-950"
-        style="font-size: 0.9rem; min-height: 800px">
-    <div *ngFor="let bankEntry of _categoriesByBank | keyvalue; let i = index">
-        <p-accordion [value]="i">
-            <p-accordion-panel [value]="i">
-                <p-accordion-header>{{ bankEntry.key }} ({{ bankEntry.value.length }})</p-accordion-header>
-                <p-accordion-content>
-                    <div *ngFor="let category of bankEntry.value">
-                        <p-fieldset legend="{{ category.name }}">
-                            <p-table [value]="category.requirements" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }" styleClass="category-table">
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th class="header-custom">Type</th>
-                                        <th class="header-custom">Field</th>
-                                        <th class="header-custom">Values</th>
-                                    </tr>
+<p-fieldset legend="Categories" [toggleable]="true">
+    <div class="font-light min-h-80 light:bg-surface-950"
+         style="font-size: 0.9rem; min-height: 100px">
+        <div *ngFor="let bankEntry of _categoriesByBank | keyvalue; let i = index">
+            <p-accordion [value]="i">
+                <p-accordion-panel [value]="i">
+                    <p-accordion-header>{{ bankEntry.key }} ({{ bankEntry.value.length }})
+                    </p-accordion-header>
+                    <p-accordion-content>
+                        <div *ngFor="let category of bankEntry.value">
+                            <p-fieldset class="category-legend" styleClass="category-legend">
+                                <ng-template pTemplate="legend" #header>
+                                    <div class="category-legend">
+                                    <span class="category-legend-name">
+                                        {{ category.name }}
+                                    </span>
+                                        <span
+                                                class="category-color-box"
+                                                [ngStyle]="{ 'background-color': category.color }">
+                                    </span>
+                                        <span class="category-legend-spacer"></span>
+                                        <button
+                                                type="button"
+                                                pButton
+                                                class="p-button-sm p-button-text category-legend-edit-button"
+                                                icon="pi pi-pencil"
+                                                label="Edit"
+                                                (click)="onEditCategory(category)">
+                                        </button>
+                                    </div>
                                 </ng-template>
-                                <ng-template pTemplate="body" let-requirement>
-                                    <tr>
-                                        <td class="row-custom">{{ requirement.fieldType }}</td>
-                                        <td class="row-custom">{{ requirement.matchType }}</td>
-                                        <td class="row-custom">
-                                            <div class="chip-container">
-                                                <div *ngFor="let labValue of requirement.values">
-                                                    <p-chip>{{ labValue.value }}</p-chip>
+                                <p-table [value]="category.requirements"
+                                         [scrollable]="true"
+                                         [tableStyle]="{ 'min-width': '50rem' }"
+                                         styleClass="category-table text-medium">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th class="header-custom">Type</th>
+                                            <th class="header-custom">Field</th>
+                                            <th class="header-custom">Values</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-requirement>
+                                        <tr>
+                                            <td class="row-custom">{{ requirement.fieldType }}</td>
+                                            <td class="row-custom">{{ requirement.matchType }}</td>
+                                            <td class="row-custom">
+                                                <div class="chip-container">
+                                                    <div *ngFor="let labValue of requirement.values">
+                                                        <p-chip>{{ labValue.value }}</p-chip>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                        </p-fieldset>
-                    </div>
-                </p-accordion-content>
-            </p-accordion-panel>
-        </p-accordion>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </p-fieldset>
+                        </div>
+                    </p-accordion-content>
+                </p-accordion-panel>
+            </p-accordion>
+        </div>
     </div>
-</div>
+    <edit-category
+            [visible]="showEditCategoryDialog"
+            [category]="categoryToEdit"
+            [banks]="banks"
+            [matchTypes]="matchTypes"
+            [fieldTypes]="fieldTypes"
+            (notify)="onNotify($event)"
+    >
+    </edit-category>
+</p-fieldset>

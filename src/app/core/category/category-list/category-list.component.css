@@ -44,8 +44,47 @@
     padding: 0.25rem 0.5rem !important;
 }
 
-p-fieldset-legend {
+.p-fieldset-legend {
     padding: 0.25rem 0.5rem !important;
+    font-size: 2rem !important;
+}
+
+.category-color-box {
+    display: inline-block;
+    width: 32px;
+    height: 16px;
+    border-radius: 2px;
+    margin-left: 6px;
+    vertical-align: middle;
+    border: 1px solid rgba(0, 0, 0, 0.2); /* optional for contrast */
+}
+
+.category-legend {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.category-legend-name {
+    font-weight: 500;
+}
+
+.category-color-box {
+    display: inline-block;
+    width: 32px;
+    height: 16px;
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* pushes the button to the far right */
+.category-legend-spacer {
+    flex: 1 1 auto;
+}
+
+.category-legend-edit-button {
+    margin-left: 0.5rem;
 }
 
 

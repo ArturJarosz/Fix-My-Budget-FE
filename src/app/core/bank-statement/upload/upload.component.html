@@ -3,21 +3,21 @@
         <div class="bg-surface-0 light:bg-surface-900 shadow-sm rounded-2xl p-8 max-w-4xl mx-auto flex flex-col gap-8">
             <span class="text-xl font-medium text-surface-900 light:text-surface-0 leading-tight">Upload Bank Statement file</span>
 
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <p-fileupload #fu mode="basic" chooseLabel="Choose" chooseIcon="pi pi-upload" name="file[]" url="https://www.primefaces.org/cdn/api/upload.php" accept=".csv" maxFileSize="1000000" (onSelect)="assignFile($event)" (onUpload)="onUpload($event)"/>
                     <p-button label="Upload" (onClick)="fu.upload()" severity="secondary" [disabled]="!isUploadValid()"/>
                 </div>
             </div>
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-3">
                 <span class="text-surface-900 light:text-surface-0 font-semibold leading-tight">Details</span>
-                <div class="flex flex-col gap-4">
-                    <div class="flex items-center gap-4">
+                <div class="flex flex-col gap-3">
+                    <div class="flex items-center gap-3">
                         <span class="w-4 h-4 bg-cyan-500 rounded-full"></span>
                         <span class="flex-1 text-surface-700 light:text-surface-300 font-normal leading-tight">Bank</span>
                         <p-select class="col-8 pr-3" formControlName="bank" [options]="$banks()"></p-select>
                     </div>
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-3">
                         <span class="w-4 h-4 bg-amber-500 rounded-full"></span>
                         <span class="flex-1 text-surface-900 light:text-surface-0 font-normal leading-tight">Unique identifier</span>
                         <input type="text" class=".p-inputtext" formControlName="source" pInputText placeholder="unique identifier"/>

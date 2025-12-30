@@ -1,20 +1,23 @@
 <div>
-    <div class="bg-surface-0 p-4 rounded-2xl flex flex-col gap-4">
+    <div class="bg-surface-0 p-3 rounded-2xl flex flex-col gap-3">
         <category-list
                 [categoriesByBank]="$categoriesByBank()"
                 [categories]="$categories()"
+                [banks]="$banks()"
+                [matchTypes]="$matchTypes()"
+                [fieldTypes]="$fieldTypes()"
         >
 
         </category-list>
-        <div class="border border-surface rounded-2xl p-4 light:bg-surface-950 flex gap-4">
-            <div class="border border-surface rounded-2xl flex-1 p-4 w-full flex flex-col justify-center items-center">
+        <div class="light:bg-surface-950 flex gap-3">
+            <div class="border border-surface rounded-2xl flex-1 p-3 w-full flex flex-col justify-center items-center">
                 <p-button pButton class=" font-medium! rounded-md!" severity="secondary" (onClick)="downloadConfiguration()">
                     <span pButtonLabel>Download category configuration</span>
                 </p-button>
             </div>
-            <div class="border border-surface rounded-2xl flex-1 p-4">
+            <div class="border border-surface rounded-2xl flex-1 p-3">
                 <div class="bg-surface-0 light:bg-surface-950 md:px-8 lg:px-6">
-                    <div class="bg-surface-0 light:bg-surface-900 shadow-sm rounded-2xl p-4 max-w-4xl mx-auto flex flex-col gap-8">
+                    <div class="max-w-4xl mx-auto flex flex-col gap-8">
                         <span class="text-xl font-medium text-surface-900 light:text-surface-0 leading-tight">Upload category configuration</span>
                         <div class="flex justify-between items-center">
                             <p-fileupload #fu mode="basic" chooseLabel="Choose" chooseIcon="pi pi-upload" name="file[]" url="https://www.primefaces.org/cdn/api/upload.php" accept=".json" maxFileSize="1000000" (onUpload)="onUpload($event)"/>
@@ -23,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="border border-surface rounded-2xl flex-1 p-4  w-full flex flex-col justify-center items-center">
+            <div class="border border-surface rounded-2xl flex-1 p-3  w-full flex flex-col justify-center items-center">
                 <p-button pButton class=" font-medium! rounded-md!" severity="secondary" (onClick)="toggleShowAddCategoryDialog()">
                     <span pButtonLabel>Add new category</span>
                 </p-button>

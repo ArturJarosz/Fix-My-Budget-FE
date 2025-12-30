@@ -1,86 +1,98 @@
-<div class="p-4 flex gap-8 bg-surface-0 light:bg-surface-950 transaction-list-wrapper">
-    <p-table [value]="transactions" stripedRows
-             [tableStyle]="{'width': '100%; max-height: 50%'}"
-             [paginator]="true"
-             [rows]="25"
-             [paginatorPosition]="'bottom'"
-             [showCurrentPageReport]="true"
-             [currentPageReportTemplate]="'{first} to {last} of {totalRecords}'"
-             [scrollable]="true"
-             scrollHeight="1000px"
-             class="font-medium"
-             styleClass="w-full">
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn>
-                    ID
-                </th>
-                <th pSortableColumn="amount">
-                    <div class="flex items-center gap-2">
-                        Amount
-                        <p-sortIcon field="amount"/>
-                    </div>
-                </th>
-                <th pSortableColumn="transactionDate">
-                    <div class="flex items-center gap-2">
-                        Date
-                        <p-sortIcon field="transactionDate"/>
-                    </div>
-                </th>
-                <th>Category</th>
-                <th>Details</th>
-                <th>Recipient name</th>
-                <th>Sender name</th>
-                <th>Bank</th>
-                <th>Source</th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>
-                    <p-columnFilter type="text" field="category" placeholder="Type to search" ariaLabel="Filter category" filterOn="input" inputStyleClass="tx-filter-input" ></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter type="text" field="details" placeholder="Type to search" ariaLabel="Filter details" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter type="text" field="recipientName" placeholder="Type to search" ariaLabel="Filter recipient" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter type="text" field="senderName" placeholder="Type to search" ariaLabel="Filter sender" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter type="text" field="bank" placeholder="Type to search" ariaLabel="Filter bank" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter type="text" field="source" placeholder="Type to search" ariaLabel="Filter source" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
-                </th>
+<p-fieldset legend="Transactions" [toggleable]="true">
+    <div class="p-3 flex gap-3 bg-surface-0 light:bg-surface-950 transaction-list-wrapper">
+        <p-table [value]="transactions" stripedRows
+                 [tableStyle]="{'width': '100%; max-height: 50%'}"
+                 [paginator]="true"
+                 [rows]="25"
+                 [paginatorPosition]="'bottom'"
+                 [showCurrentPageReport]="true"
+                 [currentPageReportTemplate]="'{first} to {last} of {totalRecords}'"
+                 [scrollable]="true"
+                 scrollHeight="1000px"
+                 class="font-medium"
+                 styleClass="w-full">
+            <ng-template pTemplate="header"  class="font-medium">
+                <tr class="font-medium">
+                    <th pSortableColumn>
+                        ID
+                    </th>
+                    <th pSortableColumn="amount">
+                        <div class="flex items-center gap-2">
+                            Amount
+                            <p-sortIcon field="amount"/>
+                        </div>
+                    </th>
+                    <th pSortableColumn="transactionDate">
+                        <div class="flex items-center gap-2">
+                            Date
+                            <p-sortIcon field="transactionDate"/>
+                        </div>
+                    </th>
+                    <th>Category</th>
+                    <th>Details</th>
+                    <th>Recipient name</th>
+                    <th>Sender name</th>
+                    <th>Bank</th>
+                    <th>Source</th>
+                </tr>
+                <tr class="font-medium">
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>
+                        <p-columnFilter type="text" matchMode="contains" field="category" placeholder="Type to search" ariaLabel="Filter category" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" matchMode="contains" field="details" placeholder="Type to search" ariaLabel="Filter details" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" matchMode="contains" field="recipientName" placeholder="Type to search" ariaLabel="Filter recipient" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" matchMode="contains" field="senderName" placeholder="Type to search" ariaLabel="Filter sender" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" matchMode="contains" field="bank" placeholder="Type to search" ariaLabel="Filter bank" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" matchMode="contains" field="source" placeholder="Type to search" ariaLabel="Filter source" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    </th>
 
-            </tr>
-        </ng-template>
-        <ng-template let-transaction pTemplate="body">
-            <tr class="text-sm font-medium leading-tight dark:text-surface-0 text-muted-color">
-                <td style="width: 3rem">#{{ transaction.id }}</td>
-                <td style="width: 4rem">
-                    <div *ngIf="transaction.transactionType == 'INCOME'">
-                        <div class="text-green-500 cell-right" style="text-align: right; width: 5rem">{{ transaction.amount | currency: ' ':'code':'2.2-2' }}</div>
-                    </div>
-                    <div *ngIf="transaction.transactionType == 'EXPENSE'">
-                        <div class="text-red-500 cell-right" style="text-align: right; width: 5rem">{{ transaction.amount | currency: ' ':'code':'2.2-2' }}</div>
-                    </div>
-                </td>
-                <td style="width: 7rem">{{ transaction.transactionDate }}</td>
-                <td>
-                    <p-tag pStyleClass="font-medium" data-p="success" class="font-medium p-component p-tag p-tag-success" data-pc-section="root" data-pc-name="t">
-                        <span class="p-tag-label" data-pc-section="label">{{ transaction.category }}</span></p-tag>
-                </td>
-                <td>{{ transaction.details }}</td>
-                <td>{{ transaction.recipientName }}</td>
-                <td>{{ transaction.senderName }}</td>
-                <td>{{ transaction.bank }}</td>
-                <td>{{ transaction.source }}</td>
-            </tr>
-        </ng-template>
-    </p-table>
-</div>
+                </tr>
+            </ng-template>
+            <ng-template let-transaction pTemplate="body"  class="font-medium">
+                <tr class="text-sm font-medium leading-tight dark:text-surface-0 text-muted-color">
+                    <td style="width: 3rem">#{{ transaction.id }}</td>
+                    <td style="width: 4rem">
+                        <div *ngIf="transaction.transactionType == 'INCOME'">
+                            <div class="text-green-500 cell-right" style="text-align: right; width: 5rem">{{ transaction.amount | currency: ' ':'code':'2.2-2' }}</div>
+                        </div>
+                        <div *ngIf="transaction.transactionType == 'EXPENSE'">
+                            <div class="text-red-500 cell-right" style="text-align: right; width: 5rem">{{ transaction.amount | currency: ' ':'code':'2.2-2' }}</div>
+                        </div>
+                    </td>
+                    <td style="width: 7rem">{{ transaction.transactionDate }}</td>
+                    <td>
+                        <p-tag
+                                pStyleClass="font-medium"
+                                data-p="success"
+                                class="font-medium p-component p-tag p-tag-success"
+                                [style.backgroundColor]="resolveColor(transaction.category)"
+                                [style.borderColor]="resolveColor(transaction.category)"
+                                [style.color]="resolveFontColor(resolveColor(transaction.category))"
+                                data-pc-section="root"
+                                data-pc-name="t">
+                        <span class="p-tag-label" data-pc-section="label"
+                        >{{ transaction.category }}</span></p-tag>
+                    </td>
+                    <td>{{ transaction.details }}</td>
+                    <td>{{ transaction.recipientName }}</td>
+                    <td>{{ transaction.senderName }}</td>
+                    <td style="width: 10rem">{{ transaction.bank }}</td>
+                    <td style="width: 14rem">{{ transaction.source }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</p-fieldset>
+
