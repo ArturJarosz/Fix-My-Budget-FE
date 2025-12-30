@@ -1,0 +1,23 @@
+.p-button {
+    padding-block: 0.25rem;
+    padding-inline: 0.25rem;
+}
+
+.chip-text {
+    display: flex; /* or inline-flex */
+    align-items: center; /* vertical centering */
+    padding: 0 0.5rem;
+
+}
+
+.chip-parent {
+    margin-right: 0.5rem; /* horizontal spacing between chips */
+    margin-bottom: 0.25rem; /* optional vertical spacing if they wrap */
+    border-radius: 10px; /* fully rounded corners (pill style) */
+    background-color: #c5ecec;
+}
+
+:host ::ng-deep .p-dialog-header {
+    font-size: 1.25rem;
+    padding: 1rem 2rem !important;
+}

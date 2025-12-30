@@ -4,11 +4,11 @@
           (onHide)="onClose()">
     <ng-template pTemplate="header">
         <div class="flex flex-column gap-2">
-            <h1 class="m-0 text-900 font-semibold line-height-3">Add new category</h1>
+            <h1 class="m-0 text-900 font-semibold line-height-3">Edit category</h1>
         </div>
     </ng-template>
     <div>
-        <form [formGroup]="addCategoryForm">
+        <form [formGroup]="editCategoryForm">
             <p-fieldset legend="Basic category data">
                 <div class="flex flex-col gap-6">
                     <div class="flex gap-3">
@@ -17,7 +17,7 @@
                             <span class="p-input-icon-left w-full">
                                 <input type="text" class="w-full" id="name" formControlName="name"
                                        pInputText placeholder="category name"
-                                       [ngClass]="{'is-invalid': (addCategoryForm.get('name')?.touched || addCategoryForm.get('name')?.dirty) && !addCategoryForm.get('name')?.valid }"
+                                       [ngClass]="{'is-invalid': (editCategoryForm.get('name')?.touched || editCategoryForm.get('name')?.dirty) && !editCategoryForm.get('name')?.valid }"
                                 />
                             </span>
                         </div>
@@ -31,8 +31,8 @@
                         </div>
                         <div class="flex-2">
                             <label for="bank" class="block text-color text-base top-label">Color</label>
-                            <div class="p-1">
-                                <p-colorpicker formControlName="color" defaultColor="989898"></p-colorpicker>
+                            <div class="color-wrapper p-1">
+                                <p-colorpicker formControlName="color" defaultColor="989898" styleClass="colorpicker"></p-colorpicker>
                             </div>
 
                         </div>

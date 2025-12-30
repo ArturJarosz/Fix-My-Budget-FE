@@ -1,0 +1,32 @@
+.tcs-cell-number {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.tcs-color-dot {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    border: 1px solid #ccc;
+    margin-right: 0.5rem;
+}
+
+.tcs-color-code {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.tcs-summary-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    margin-top: 0.75rem;
+    font-weight: 600;
+}
+
+.tcs-empty {
+    padding: 0.75rem 0;
+    color: #777;
+    font-style: italic;
+}

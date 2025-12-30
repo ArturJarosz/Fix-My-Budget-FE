@@ -104,7 +104,7 @@ textarea {
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
-    padding: 0.75rem;
+    padding: 0.4rem;
 }
 
 .p-datatable .p-datatable-thead > tr > th {
@@ -185,3 +185,28 @@ textarea {
     padding-inline: 0.5rem !important;
 }
 
+.p-fieldset-legend {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 1.0rem !important;
+}
+
+.p-accordion-header {
+    font-size: 1.5rem !important;
+}
+
+.p-dialog {
+    --p-colorpicker-preview-width: 2rem;  /* ~32px */
+    --p-colorpicker-preview-height: 2rem;
+}
+
+transaction-list p-table {
+    width: 100%;
+}
+
+fieldset p-chart canvas {
+    height: 550px !important;
+}
+
+.p-fieldset {
+    padding: 0 1rem 1rem 1rem !important;
+}

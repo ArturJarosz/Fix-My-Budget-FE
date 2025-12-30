@@ -1,0 +1,30 @@
+.tb-chart-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.tb-chart-container {
+    position: relative;
+    width: 100%;
+    min-height: 300px; /* hard height so we know what we’re aiming for */
+}
+
+/* override PrimeNG chart wrapper */
+:host ::ng-deep .p-chart {
+    width: 100% !important;
+    height: 100% !important; /* fill the .tb-chart-container */
+}
+
+/* override canvas inline style */
+:host ::ng-deep .p-chart canvas {
+    width: 100% !important;
+    height: 100% !important; /* this beats style="height: 150px" */
+}
+
+.tb-chart-empty {
+    padding: 1rem 0;
+    color: #777;
+    font-style: italic;
+}

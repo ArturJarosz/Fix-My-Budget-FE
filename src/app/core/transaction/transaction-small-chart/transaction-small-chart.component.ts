@@ -1,11 +1,13 @@
 import {Component, Input, OnChanges} from '@angular/core';
-import {BankTransaction} from "../../../models/models";
+import {BankTransaction, Category} from "../../../models/models";
 import {MeterGroup, MeterItem} from "primeng/metergroup";
+import {Fieldset} from "primeng/fieldset";
 
 @Component({
     selector: 'transaction-small-chart',
     imports: [
-        MeterGroup
+        MeterGroup,
+        Fieldset
     ],
     templateUrl: './transaction-small-chart.component.html',
     styleUrl: './transaction-small-chart.component.css'
@@ -13,6 +15,8 @@ import {MeterGroup, MeterItem} from "primeng/metergroup";
 export class TransactionSmallChartComponent implements OnChanges {
     @Input()
     transactions!: BankTransaction[];
+    @Input()
+    categories!: Category[];
 
     items: MeterItem[] = [];
 
@@ -27,28 +31,27 @@ export class TransactionSmallChartComponent implements OnChanges {
             return acc;
         }, {});
 
-        const grandTotal = Object.values(totals).reduce((sum, v) => sum + v, 0);
+        const grandTotal = Object.values(totals)
+            .reduce((sum, v) => sum + v, 0);
 
         if (grandTotal === 0) {
             return [];
         }
 
-        function getRandomColor(): string {
-            // Random bright-ish HSL color
-            const hue = Math.floor(Math.random() * 360);
-            const saturation = 70;
-            const lightness = 50;
-            return `hsl(${hue}deg ${saturation}% ${lightness}%)`;
-        }
+        return Object.entries(totals)
+            .map(([category, total]) => {
+                const percentage = (total / grandTotal) * 100;
 
-        return Object.entries(totals).map(([category, total]) => {
-            const percentage = (total / grandTotal) * 100;
+                return {
+                    label: `${category} (${total.toFixed(2)})`,
+                    value: percentage,     // 👈 now 0–100, not raw amount
+                    color: this.resolveColor(category)
+                } as MeterItem;
+            });
+    }
 
-            return {
-                label: `${category} (${total.toFixed(2)})`,
-                value: percentage,     // 👈 now 0–100, not raw amount
-                color: getRandomColor()
-            } as MeterItem;
-        });
+    private resolveColor(categoryName: string): string {
+        const category = this.categories.find(c => c.name === categoryName);
+        return category?.color ?? '#000000';
     }
 }

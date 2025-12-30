@@ -44,8 +44,6 @@ export class CategoryScreenComponent implements OnInit {
     $categories: Signal<Category[]> = this.categoryStore.categories;
     $categoriesByBank: Signal<CategoriesByBank> = computed(() => {
         const cats = this.$categories();
-        console.log('Recomputing $categoriesByBank, len:', cats.length);
-
         return cats.reduce<CategoriesByBank>((acc, category) => {
             const bank = category.bankName;
             if (!acc[bank]) {
@@ -59,33 +57,26 @@ export class CategoryScreenComponent implements OnInit {
     $fieldTypes: Signal<string[]> = this.configurationStore.fieldTypes;
     $matchTypes: Signal<string[]> = this.configurationStore.matchTypes;
 
-    categories: TreeNode<CategoryNode>[] | undefined;
 
     constructor(private categoryRestService: CategoryRestService) {
         this.categoryStore.loadCategories({});
         effect(() => {
             const cats = this.$categories();
-            console.log('Screen $categories length:', cats.length);
-            console.log("refreshing categories...")
-            this.categories = this.initTree(cats);
         });
 
         effect(() => {
             const byBank = this.$categoriesByBank();
-            console.log('Screen $categoriesByBank keys:', Object.keys(byBank));
         });
     }
 
     ngOnInit(): void {
         this.categoryStore.loadCategories({});
         this.configurationStore.loadConfiguration({});
-        this.categories = this.initTree(this.$categories());
     }
 
     protected downloadConfiguration() {
         this.categoryRestService.getCategoriesFile()
             .subscribe((blob) => {
-                console.log(blob.fileName);
                 const url = window.URL.createObjectURL(blob.blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -102,22 +93,6 @@ export class CategoryScreenComponent implements OnInit {
             const uploadFile = $event.files[0];
             this.categoryStore.uploadFile({file: uploadFile});
         }
-    }
-
-    private initTree(categories: Category[]): TreeNode<CategoryNode>[] {
-        let result: TreeNode<CategoryNode>[] = [];
-        categories.forEach(category => {
-            let children = category.requirements.map(requirement => this.mapRequirement(requirement));
-            let rootNode: TreeNode<CategoryNode> = {
-                data: {
-                    name: category.name,
-                    bankName: category.bankName
-                },
-                children: children
-            }
-            result.push(rootNode);
-        })
-        return result;
     }
 
     private mapRequirement(requirement: CategoryRequirement): TreeNode<CategoryNode> {

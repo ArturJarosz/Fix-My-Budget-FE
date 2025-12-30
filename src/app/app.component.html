@@ -1,9 +1,9 @@
-<div class="p-4 flex gap-8 bg-surface-0 light:bg-surface-950">
-    <div class="p-4 bg-surface-50 light:bg-surface-900 rounded-2xl border border-surface-100 light:border-surface-700 flex flex-col w-24">
+<div class="p-3 flex gap-8 bg-surface-0 light:bg-surface-950">
+    <div class="p-3 light:bg-surface-900 rounded-2xl border border-surface-100 light:border-surface-700 flex flex-col w-24">
         <div class="flex justify-center">
         </div>
         <div class="flex-1 flex flex-col items-center py-6">
-            <nav class="flex flex-col items-center gap-4">
+            <nav class="flex flex-col items-center gap-3">
                 @for (item of navs(); track item.label) {
                     <button pTooltip="{{ item.label }}"
                             [routerLink]="item.routerLink"
@@ -18,7 +18,7 @@
                 }
             </nav>
         </div>
-        <div class="flex flex-col items-center gap-4 mt-auto">
+        <div class="flex flex-col items-center gap-3 mt-auto">
             @for (item of bottomNavs(); track item.label) {
                 <button
                         [ngClass]="
@@ -34,22 +34,8 @@
         </div>
     </div>
     <div class="min-h-screen overflow-auto flex-1 flex flex-col gap-8 transition-all px-2">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between py-6 gap-4">
-            <div>
-                <h1 class="text-lg font-medium text-surface-900 light:text-surface-0">Transactions</h1>
-            </div>
-            <div class="flex items-center gap-2">
-                <p-iconfield>
-                    <p-inputicon class="pi pi-search"></p-inputicon>
-                    <input pInputText [(ngModel)]="search" placeholder="Search" size="small" class="md:w-56 w-full h-9"/>
-                </p-iconfield>
-                <button pButton severity="secondary" outlined class="w-9 h-9 p-0! shrink-0 rounded-md">
-                    <i pButtonIcon class="pi pi-bell text-sm! leading-normal!"></i>
-                </button>
-            </div>
-        </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 flex-1 md:flex-row flex-col">
-            <div class="flex-1 col-span-3 md:col-span-3 border border-surface-200 light:border-surface-700 rounded-2xl bg-surface-50 light:bg-surface-800">
+            <div class="flex-1 col-span-3 md:col-span-3 border border-surface-200 light:border-surface-700 rounded-2xl light:bg-surface-800">
                 <router-outlet></router-outlet>
             </div>
         </div>
