@@ -104,7 +104,7 @@ textarea {
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
-    padding: 0.4rem;
+    padding: 0.2rem;
 }
 
 .p-datatable .p-datatable-thead > tr > th {
@@ -208,5 +208,10 @@ fieldset p-chart canvas {
 }
 
 .p-fieldset {
-    padding: 0 1rem 1rem 1rem !important;
+    padding: 0 0.75rem 0.75rem 0.75rem !important;
+}
+
+.p-button-sm {
+    padding-block: 0.1rem !important;
+    padding-inline: 0.1rem !important;
 }

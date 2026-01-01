@@ -4,6 +4,7 @@ import {ConfigurationRestService, ConfigurationRestServiceImpl} from "./configur
 import {RouterModule} from "@angular/router";
 import {CategoryScreenComponent} from "./category/category-screen/category-screen.component";
 import {CategoryRestService, CategoryRestServiceImpl} from "./category/rest/category-rest.service";
+import {TransactionRestService, TransactionRestServiceImpl} from "./transaction/rest/transaction-rest.service";
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import {CategoryRestService, CategoryRestServiceImpl} from "./category/rest/cate
     ],
     providers: [
         {provide: ConfigurationRestService, useClass: ConfigurationRestServiceImpl},
-        {provide: CategoryRestService, useClass: CategoryRestServiceImpl}
+        {provide: CategoryRestService, useClass: CategoryRestServiceImpl},
+        {provide: TransactionRestService, useClass: TransactionRestServiceImpl}
     ]
 
 })

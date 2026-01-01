@@ -121,7 +121,6 @@ export class TransactionBigChartComponent implements OnChanges {
             if (group[categoryName] > maxValue) {
                 maxValue = group[categoryName];
             }
-            console.log(" === maxValue: ", maxValue);
         }
 
         // Prepare datasets: exactly ONE dataset per category,

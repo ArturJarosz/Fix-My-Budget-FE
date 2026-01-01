@@ -5,6 +5,9 @@ import {TableModule} from 'primeng/table';
 import {CurrencyPipe, NgIf} from '@angular/common';
 import {StyleClass} from "primeng/styleclass";
 import {Tag} from "primeng/tag";
+import {Button, ButtonDirective} from "primeng/button";
+import {Ripple} from "primeng/ripple";
+import {EditCategoryComponent} from "../../category/edit-category/edit-category.component";
 
 interface CategorySummaryRow {
     categoryName: string;
@@ -12,6 +15,7 @@ interface CategorySummaryRow {
     totalAmount: number;
     color: string;
     side: 'income' | 'expense';
+    category: Category;
 }
 
 @Component({
@@ -23,7 +27,11 @@ interface CategorySummaryRow {
         CurrencyPipe,
         NgIf,
         StyleClass,
-        Tag
+        Tag,
+        ButtonDirective,
+        Ripple,
+        Button,
+        EditCategoryComponent
     ],
     templateUrl: './transaction-category-summary.component.html',
     styleUrl: './transaction-category-summary.component.css'
@@ -31,27 +39,32 @@ interface CategorySummaryRow {
 export class TransactionCategorySummaryComponent implements OnChanges {
     @Input()
     transactions!: BankTransaction[];
-
     @Input()
     categories!: Category[];
+    @Input()
+    fieldTypes!: string[];
+    @Input()
+    matchTypes!: string[];
+    @Input()
+    banks!: string[];
 
-    rows: CategorySummaryRow[] = [];
     expenseRows: CategorySummaryRow[] = [];
     incomeRows: CategorySummaryRow[] = [];
     totalIncome = 0;
     totalExpense = 0;
+    protected showEditCategoryDialog: boolean = false;
+    categoryToEdit: Category | undefined;
 
     ngOnChanges(): void {
         this.recalculate();
     }
 
     private recalculate(): void {
+        this.expenseRows = [];
+        this.incomeRows = [];
+        this.totalIncome = 0;
+        this.totalExpense = 0;
         if (!this.transactions || this.transactions.length === 0) {
-            this.rows = [];
-            this.expenseRows = [];
-            this.incomeRows = [];
-            this.totalIncome = 0;
-            this.totalExpense = 0;
             return;
         }
 
@@ -85,6 +98,7 @@ export class TransactionCategorySummaryComponent implements OnChanges {
         for (const [categoryName, summary] of Object.entries(summaryMap)) {
             const side = categorySide[categoryName] ?? 'expense';
             const color = this.resolveColor(categoryName);
+            const category = this.categories?.find(c => c.name === categoryName)!;
 
             if (side === 'income') {
                 this.incomeRows.push({
@@ -92,7 +106,8 @@ export class TransactionCategorySummaryComponent implements OnChanges {
                     transactionCount: summary.count,
                     totalAmount: summary.total,
                     color,
-                    side
+                    side,
+                    category
                 });
             } else {
                 this.expenseRows.push({
@@ -100,22 +115,29 @@ export class TransactionCategorySummaryComponent implements OnChanges {
                     transactionCount: summary.count,
                     totalAmount: summary.total,
                     color,
-                    side
+                    side,
+                    category
                 });
             }
-
-            rows.push({
-                categoryName,
-                transactionCount: summary.count,
-                totalAmount: summary.total,
-                color,
-                side
-            });
 
             if (side === 'income') {
                 totalIncome += summary.total;
             } else {
                 totalExpense += summary.total;
+            }
+        }
+
+        for (const category of this.categories) {
+            let categoryName = category.name;
+            if (!this.incomeRows.find(r => r.categoryName === categoryName) && !this.expenseRows.find(r => r.categoryName === categoryName)) {
+                this.expenseRows.push({
+                    categoryName,
+                    transactionCount: 0,
+                    totalAmount: 0,
+                    color: this.resolveColor(categoryName),
+                    side: 'expense',
+                    category
+                });
             }
         }
 
@@ -126,7 +148,6 @@ export class TransactionCategorySummaryComponent implements OnChanges {
             return b.totalAmount - a.totalAmount;
         });
 
-        this.rows = rows;
         this.totalIncome = totalIncome;
         this.totalExpense = totalExpense;
     }
@@ -171,5 +192,14 @@ export class TransactionCategorySummaryComponent implements OnChanges {
 
         // threshold: if too dark, use white; otherwise black
         return luminance < 0.5 ? '#FFFFFF' : '#000000';
+    }
+
+    onCategoryEditClick(category: Category) {
+        this.categoryToEdit = category;
+        this.showEditCategoryDialog = true;
+    }
+
+    protected onNotify($event: boolean) {
+        this.showEditCategoryDialog = $event.valueOf();
     }
 }
