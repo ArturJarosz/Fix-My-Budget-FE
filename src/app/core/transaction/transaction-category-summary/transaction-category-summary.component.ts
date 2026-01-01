@@ -37,6 +37,15 @@ interface CategorySummaryRow {
     styleUrl: './transaction-category-summary.component.css'
 })
 export class TransactionCategorySummaryComponent implements OnChanges {
+    readonly UNCATEGORIZED = 'UNCATEGORIZED';
+
+    readonly DEFAULT_ERROR_COLOR = '#000000';
+    readonly DEFAULT_FALLBACK_COLOR = '#888888';
+
+    readonly DARK_FONT_COLOR = '#000000';
+    readonly LIGHT_FONT_COLOR = '#FFFFFF';
+    readonly FONT_COLOR_THRESHOLD = 0.5;
+
     @Input()
     transactions!: BankTransaction[];
     @Input()
@@ -72,14 +81,14 @@ export class TransactionCategorySummaryComponent implements OnChanges {
         const categorySide: Record<string, 'income' | 'expense'> = {};
         const summaryMap: Record<string, { count: number; total: number }> = {};
 
-        for (const tx of this.transactions) {
-            const rawAmount = tx.amount;
+        for (const transaction of this.transactions) {
+            const rawAmount = transaction.amount;
             if (rawAmount === 0) {
                 continue;
             }
 
-            const categoryName = tx.category || 'UNCATEGORIZED';
-            const isIncome = tx.transactionType === TransactionType.INCOME;
+            const categoryName = transaction.category || this.UNCATEGORIZED;
+            const isIncome = transaction.transactionType === TransactionType.INCOME;
             const absAmount = Math.abs(rawAmount);
 
             if (!categorySide[categoryName]) {
@@ -129,7 +138,8 @@ export class TransactionCategorySummaryComponent implements OnChanges {
 
         for (const category of this.categories) {
             let categoryName = category.name;
-            if (!this.incomeRows.find(r => r.categoryName === categoryName) && !this.expenseRows.find(r => r.categoryName === categoryName)) {
+            if (!this.incomeRows.find(r => r.categoryName === categoryName) && !this.expenseRows.find(
+                r => r.categoryName === categoryName)) {
                 this.expenseRows.push({
                     categoryName,
                     transactionCount: 0,
@@ -154,26 +164,29 @@ export class TransactionCategorySummaryComponent implements OnChanges {
 
     resolveColor(categoryName?: string | null): string {
         if (!categoryName || !this.categories) {
-            return '#000000';
+            return this.DEFAULT_ERROR_COLOR;
         }
         const category = this.categories.find(c => c.name === categoryName);
-        return category?.color ?? '#888888';
+        return category?.color ?? this.DEFAULT_FALLBACK_COLOR;
     }
 
     resolveFontColor(bgColor: string | null | undefined): string {
         if (!bgColor) {
-            return '#000000';
+            return this.DEFAULT_ERROR_COLOR;
         }
 
         // normalize: remove '#', handle short form if needed
-        let hex = bgColor.replace('#', '').trim();
+        let hex = bgColor.replace('#', '')
+            .trim();
         if (hex.length === 3) {
             // e.g. 'abc' -> 'aabbcc'
-            hex = hex.split('').map(ch => ch + ch).join('');
+            hex = hex.split('')
+                .map(ch => ch + ch)
+                .join('');
         }
         if (hex.length !== 6) {
             // fallback if color is not in expected format
-            return '#000000';
+            return this.DEFAULT_ERROR_COLOR;
         }
 
         const r = parseInt(hex.substring(0, 2), 16);
@@ -191,7 +204,7 @@ export class TransactionCategorySummaryComponent implements OnChanges {
         const luminance = 0.2126 * rl + 0.7152 * gl + 0.0722 * bl;
 
         // threshold: if too dark, use white; otherwise black
-        return luminance < 0.5 ? '#FFFFFF' : '#000000';
+        return luminance < this.FONT_COLOR_THRESHOLD ? this.LIGHT_FONT_COLOR : this.DARK_FONT_COLOR;
     }
 
     onCategoryEditClick(category: Category) {

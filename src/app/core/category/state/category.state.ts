@@ -62,9 +62,8 @@ export const CategoryStore = signalStore(
                     switchMap(({category}) =>
                         restService.createCategory(category)
                             .pipe(
-                                // after create, reload categories
+                                // after creation, reload categories
                                 switchMap(() => {
-                                    transactionStore.recalculateTransactionsCategories({bank: category.bankName});
                                     transactionStore.loadTransactions({});
                                     return reloadCategories$()
                                 })
@@ -80,7 +79,6 @@ export const CategoryStore = signalStore(
                             .pipe(
                                 // after update, reload categories
                                 switchMap(() => {
-                                    transactionStore.recalculateTransactionsCategories({bank: category.bankName});
                                     transactionStore.loadTransactions({});
                                     return reloadCategories$()
                                 })

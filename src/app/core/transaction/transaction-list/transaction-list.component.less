@@ -23,3 +23,58 @@
 :host ::ng-deep .transaction-list-wrapper .p-datatable-wrapper {
     width: 100%;
 }
+
+.tx-clickable-cell {
+    cursor: pointer;
+}
+
+.tx-clickable-cell:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Highlight class applied to filter inputs when the user hovers a cell */
+.tx-filter-highlight {
+    border-color: var(--p-primary-color, #3b82f6) !important;
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+:host ::ng-deep .p-datatable-thead > tr:nth-child(2) > th {
+    padding: 0.2rem 0.4rem;
+}
+:host ::ng-deep .transaction-list-wrapper input.p-inputtext {
+    padding: 0.4rem 0.25rem !important;
+    font-size: 0.8rem !important;
+    line-height: 1.1 !important;
+}
+
+:host {
+    display: block;
+    width: 100%;
+}
+
+.transaction-list-wrapper {
+    width: 100%;
+}
+
+:host ::ng-deep .transaction-list-wrapper .p-datatable {
+    width: 100%;
+}
+
+:host ::ng-deep .transaction-list-wrapper .p-datatable-wrapper {
+    width: 100%;
+}
+
+.tx-clickable-cell {
+    cursor: pointer;
+}
+
+.tx-clickable-cell:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* When header is "linked" to hovered body cells, highlight its input */
+:host ::ng-deep th.tx-filter-header-highlight input.p-inputtext {
+    border-color: var(--p-primary-color, #3b82f6) !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5) !important;
+    background-color: rgba(59, 130, 246, 0.06) !important;
+}

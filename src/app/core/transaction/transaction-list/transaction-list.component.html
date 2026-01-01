@@ -1,6 +1,7 @@
 <p-fieldset legend="Transactions" [toggleable]="true">
     <div class="p-2 flex gap-3 bg-surface-0 light:bg-surface-950 transaction-list-wrapper">
-        <p-table [value]="transactions" stripedRows
+        <p-table #txTable
+                 [value]="transactions" stripedRows
                  [tableStyle]="{'width': '100%; max-height: 50%'}"
                  [paginator]="true"
                  [rows]="25"
@@ -39,25 +40,66 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th>
-                        <p-columnFilter type="text" matchMode="contains" field="category" placeholder="Type to search" ariaLabel="Filter category" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    <th [ngClass]="{'tx-filter-header-highlight': hoveredField === 'category'}">
+                        <p-columnFilter
+                                type="text"
+                                matchMode="contains"
+                                field="category"
+                                placeholder="Type to search"
+                                ariaLabel="Filter category"
+                                filterOn="input">
+                        </p-columnFilter>
                     </th>
-                    <th>
-                        <p-columnFilter type="text" matchMode="contains" field="details" placeholder="Type to search" ariaLabel="Filter details" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    <th [ngClass]="{'tx-filter-header-highlight': hoveredField === 'details'}">
+                        <p-columnFilter
+                                type="text"
+                                matchMode="contains"
+                                field="details"
+                                placeholder="Type to search"
+                                ariaLabel="Filter details"
+                                filterOn="input">
+                        </p-columnFilter>
                     </th>
-                    <th>
-                        <p-columnFilter type="text" matchMode="contains" field="recipientName" placeholder="Type to search" ariaLabel="Filter recipient" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    <th [ngClass]="{'tx-filter-header-highlight': hoveredField === 'recipientName'}">
+                        <p-columnFilter
+                                type="text"
+                                matchMode="contains"
+                                field="recipientName"
+                                placeholder="Type to search"
+                                ariaLabel="Filter recipient"
+                                filterOn="input">
+                        </p-columnFilter>
                     </th>
-                    <th>
-                        <p-columnFilter type="text" matchMode="contains" field="senderName" placeholder="Type to search" ariaLabel="Filter sender" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    <th [ngClass]="{'tx-filter-header-highlight': hoveredField === 'senderName'}">
+                        <p-columnFilter
+                                type="text"
+                                matchMode="contains"
+                                field="senderName"
+                                placeholder="Type to search"
+                                ariaLabel="Filter sender"
+                                filterOn="input">
+                        </p-columnFilter>
                     </th>
-                    <th>
-                        <p-columnFilter type="text" matchMode="contains" field="bank" placeholder="Type to search" ariaLabel="Filter bank" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    <th [ngClass]="{'tx-filter-header-highlight': hoveredField === 'bank'}">
+                        <p-columnFilter
+                                type="text"
+                                matchMode="contains"
+                                field="bank"
+                                placeholder="Type to search"
+                                ariaLabel="Filter bank"
+                                filterOn="input">
+                        </p-columnFilter>
                     </th>
-                    <th>
-                        <p-columnFilter type="text" matchMode="contains" field="source" placeholder="Type to search" ariaLabel="Filter source" filterOn="input" inputStyleClass="tx-filter-input"></p-columnFilter>
+                    <th [ngClass]="{'tx-filter-header-highlight': hoveredField === 'source'}">
+                        <p-columnFilter
+                                type="text"
+                                matchMode="contains"
+                                field="source"
+                                placeholder="Type to search"
+                                ariaLabel="Filter source"
+                                filterOn="input">
+                        </p-columnFilter>
                     </th>
-
                 </tr>
             </ng-template>
             <ng-template let-transaction pTemplate="body"  class="font-medium">
@@ -65,14 +107,21 @@
                     <td style="width: 3rem">#{{ transaction.id }}</td>
                     <td style="width: 4rem">
                         <div *ngIf="transaction.transactionType == 'INCOME'">
-                            <div class="text-green-500 cell-right" style="text-align: right; width: 5rem">{{ transaction.amount | currency: ' ':'code':'2.2-2' }}</div>
+                            <div class="text-green-500 cell-right" style="text-align: right; width: 5rem">
+                                {{ transaction.amount | currency: ' ':'code':'2.2-2' }}
+                            </div>
                         </div>
                         <div *ngIf="transaction.transactionType == 'EXPENSE'">
-                            <div class="text-red-500 cell-right" style="text-align: right; width: 5rem">{{ transaction.amount | currency: ' ':'code':'2.2-2' }}</div>
+                            <div class="text-red-500 cell-right" style="text-align: right; width: 5rem">
+                                {{ transaction.amount | currency: ' ':'code':'2.2-2' }}
+                            </div>
                         </div>
                     </td>
                     <td style="width: 7rem">{{ transaction.transactionDate }}</td>
-                    <td>
+                    <td class="tx-clickable-cell"
+                        (mouseenter)="onFilterCellHover('category', true)"
+                        (mouseleave)="onFilterCellHover('category', false)"
+                        (click)="onFilterCellClick('category', transaction.category, $event)">
                         <p-tag
                                 pStyleClass="font-medium"
                                 data-p="success"
@@ -82,17 +131,43 @@
                                 [style.color]="resolveFontColor(resolveColor(transaction.category))"
                                 data-pc-section="root"
                                 data-pc-name="t">
-                        <span class="p-tag-label" data-pc-section="label"
-                        >{{ transaction.category }}</span></p-tag>
+                                <span class="p-tag-label" data-pc-section="label">
+                                    {{ transaction.category }}
+                                </span>
+                        </p-tag>
                     </td>
-                    <td>{{ transaction.details }}</td>
-                    <td>{{ transaction.recipientName }}</td>
-                    <td>{{ transaction.senderName }}</td>
-                    <td style="width: 10rem">{{ transaction.bank }}</td>
-                    <td style="width: 14rem">{{ transaction.source }}</td>
+                    <td class="tx-clickable-cell"
+                        (mouseenter)="onFilterCellHover('details', true)"
+                        (mouseleave)="onFilterCellHover('details', false)"
+                        (click)="onFilterCellClick('details', transaction.details, $event)">
+                        {{ transaction.details }}
+                    </td>
+                    <td class="tx-clickable-cell"
+                        (mouseenter)="onFilterCellHover('recipientName', true)"
+                        (mouseleave)="onFilterCellHover('recipientName', false)"
+                        (click)="onFilterCellClick('recipientName', transaction.recipientName, $event)">
+                        {{ transaction.recipientName }}
+                    </td>
+                    <td class="tx-clickable-cell"
+                        (mouseenter)="onFilterCellHover('senderName', true)"
+                        (mouseleave)="onFilterCellHover('senderName', false)"
+                        (click)="onFilterCellClick('senderName', transaction.senderName, $event)">
+                        {{ transaction.senderName }}
+                    </td>
+                    <td class="tx-clickable-cell" style="width: 10rem"
+                        (mouseenter)="onFilterCellHover('bank', true)"
+                        (mouseleave)="onFilterCellHover('bank', false)"
+                        (click)="onFilterCellClick('bank', transaction.bank, $event)">
+                        {{ transaction.bank }}
+                    </td>
+                    <td class="tx-clickable-cell" style="width: 14rem"
+                        (mouseenter)="onFilterCellHover('source', true)"
+                        (mouseleave)="onFilterCellHover('source', false)"
+                        (click)="onFilterCellClick('source', transaction.source, $event)">
+                        {{ transaction.source }}
+                    </td>
                 </tr>
             </ng-template>
         </p-table>
     </div>
 </p-fieldset>
-
