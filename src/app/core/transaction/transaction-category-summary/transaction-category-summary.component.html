@@ -12,7 +12,7 @@
                         <tr class="font-medium full-width">
                             <th>Expanse Category ({{ expenseRows.length}})</th>
                             <th>Transactions</th>
-                            <th>Sum</th>
+                            <th class="tcs-header">Sum</th>
                             <th>Menu</th>
                         </tr>
                     </ng-template>
@@ -34,7 +34,7 @@
                             </td>
                             <td style="width: 7rem" class="tcs-cell-number">{{ row.transactionCount }}</td>
                             <td class="tcs-cell-number">
-                                {{ row.totalAmount | currency }}
+                                {{ row.totalAmount | currency: ' ':'code':'2.2-2'}}
                             </td>
                             <td style="width: 5rem; text-align: center;">
                                 <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-pencil" size="small" variant="text" (click)="onCategoryEditClick(row.category)"></p-button>
@@ -44,7 +44,7 @@
                 </p-table>
 
                 <div class="tcs-summary-footer p-2">
-                    <div>Expense total: {{ totalExpense | currency }}</div>
+                    <div>Expense total: {{ totalExpense | currency: ' ':'code':'2.2-2'}}</div>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
                         <tr class="font-medium full-width">
                             <th>Income Category ({{ incomeRows.length}})</th>
                             <th>Transactions</th>
-                            <th>Sum</th>
+                            <th class="tcs-header">Sum</th>
                             <th>Menu</th>
                         </tr>
                     </ng-template>
@@ -82,7 +82,7 @@
                             </td>
                             <td style="width: 7rem" class="tcs-cell-number">{{ row.transactionCount }}</td>
                             <td class="tcs-cell-number">
-                                {{ row.totalAmount | currency }}
+                                {{ row.totalAmount | currency: ' ':'code':'2.2-2'}}
                             </td>
                             <td style="width: 5rem; text-align: center;">
                                 <p-button pButton pRipple class="p-button-text p-button-plain p-0" icon="pi pi-pencil" size="small" variant="text" (click)="onCategoryEditClick(row.category)"></p-button>
@@ -92,7 +92,7 @@
                 </p-table>
 
                 <div class="tcs-summary-footer p-2">
-                    <div>Income total: {{ totalIncome | currency }}</div>
+                    <div>Income total: {{ totalIncome |currency: ' ':'code':'2.2-2'}}</div>
                 </div>
             </div>
         </div>

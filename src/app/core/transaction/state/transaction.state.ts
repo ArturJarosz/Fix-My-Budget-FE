@@ -48,7 +48,6 @@ export const TransactionStore = signalStore(
                         return restService.recalculateTransactionCategories(params.bank)
                             .pipe(
                                 tap(() => {
-                                    console.log("recalculated categories");
                                     reloadTransactions$();
                                 })
                             );

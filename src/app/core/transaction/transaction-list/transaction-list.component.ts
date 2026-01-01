@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {BankTransaction, Category} from "../../../models/models";
-import {TableModule} from "primeng/table";
-import {CurrencyPipe, NgIf} from "@angular/common";
+import {Table, TableModule} from "primeng/table";
+import {CurrencyPipe, NgClass, NgIf} from "@angular/common";
 import {Tag} from "primeng/tag";
 import {StyleClass} from "primeng/styleclass";
 import {Fieldset} from "primeng/fieldset";
@@ -15,18 +15,23 @@ import {Fieldset} from "primeng/fieldset";
         Tag,
         StyleClass,
         NgIf,
-        Fieldset
+        Fieldset,
+        NgClass
     ],
     styleUrl: './transaction-list.component.less'
 })
 export class TransactionListComponent {
+    @ViewChild('txTable') txTable!: Table;
 
     @Input()
     transactions!: BankTransaction[];
     @Input()
     categories!: Category[];
 
-    constructor() {
+    /** which filter field is currently hovered in the body cells */
+    hoveredField: string | null = null;
+
+    constructor(private elRef: ElementRef<HTMLElement>) {
     }
 
     resolveColor(categoryName?: string | null): string {
@@ -71,4 +76,22 @@ export class TransactionListComponent {
         return luminance < 0.5 ? '#FFFFFF' : '#000000';
     }
 
+    onFilterCellClick(field: string, value: string | null | undefined, event: MouseEvent): void {
+        event.stopPropagation();
+
+        if (!this.txTable || value == null) {
+            return;
+        }
+
+        const text = String(value).trim();
+        if (!text) {
+            return;
+        }
+
+        this.txTable.filter(text, field, 'contains');
+    }
+
+    onFilterCellHover(field: string, active: boolean): void {
+        this.hoveredField = active ? field : null;
+    }
 }
