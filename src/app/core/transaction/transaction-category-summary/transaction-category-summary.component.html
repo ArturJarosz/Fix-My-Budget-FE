@@ -1,7 +1,7 @@
 <p-fieldset legend="Category summary" [toggleable]="true">
     <div class="flex justify-content-between align-items-center gap-3">
         <div class="flex-1 rounded-2xl border border-surface-200">
-            <div class="p-1" *ngIf="rows.length; else noData">
+            <div class="p-1" *ngIf="expenseRows.length; else noData">
                 <p-table
                         [value]="expenseRows"
                         stripedRows
@@ -10,9 +10,10 @@
                         styleClass="w-full">>
                     <ng-template pTemplate="header" class="font-medium full-width">
                         <tr class="font-medium full-width">
-                            <th>Category</th>
+                            <th>Expanse Category ({{ expenseRows.length}})</th>
                             <th>Transactions</th>
                             <th>Sum</th>
+                            <th>Menu</th>
                         </tr>
                     </ng-template>
 
@@ -34,6 +35,9 @@
                             <td style="width: 7rem" class="tcs-cell-number">{{ row.transactionCount }}</td>
                             <td class="tcs-cell-number">
                                 {{ row.totalAmount | currency }}
+                            </td>
+                            <td style="width: 5rem; text-align: center;">
+                                <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-pencil" size="small" variant="text" (click)="onCategoryEditClick(row.category)"></p-button>
                             </td>
                         </tr>
                     </ng-template>
@@ -45,7 +49,7 @@
             </div>
         </div>
         <div class="flex-1 rounded-2xl border border-surface-200">
-            <div class="p-1" *ngIf="rows.length; else noData">
+            <div class="p-1" *ngIf="incomeRows.length; else noData">
                 <p-table
                         [value]="incomeRows"
                         stripedRows
@@ -54,9 +58,10 @@
                         styleClass="w-full">>
                     <ng-template pTemplate="header" class="font-medium full-width">
                         <tr class="font-medium full-width">
-                            <th>Category</th>
+                            <th>Income Category ({{ incomeRows.length}})</th>
                             <th>Transactions</th>
                             <th>Sum</th>
+                            <th>Menu</th>
                         </tr>
                     </ng-template>
 
@@ -78,6 +83,9 @@
                             <td style="width: 7rem" class="tcs-cell-number">{{ row.transactionCount }}</td>
                             <td class="tcs-cell-number">
                                 {{ row.totalAmount | currency }}
+                            </td>
+                            <td style="width: 5rem; text-align: center;">
+                                <p-button pButton pRipple class="p-button-text p-button-plain p-0" icon="pi pi-pencil" size="small" variant="text" (click)="onCategoryEditClick(row.category)"></p-button>
                             </td>
                         </tr>
                     </ng-template>
@@ -95,3 +103,11 @@
         </div>
     </ng-template>
 </p-fieldset>
+<edit-category
+        [visible]="showEditCategoryDialog"
+        [category]="categoryToEdit!"
+        [banks]="banks"
+        [matchTypes]="matchTypes"
+        [fieldTypes]="fieldTypes"
+        (notify)="onNotify($event)"
+></edit-category>

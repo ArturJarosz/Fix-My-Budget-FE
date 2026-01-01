@@ -54,7 +54,7 @@ export class CategoryListComponent {
         this.categoryToEdit = category;
     }
 
-    protected toggleShowEditCategoryDialog() {
+    toggleShowEditCategoryDialog() {
         this.showEditCategoryDialog = !this.showEditCategoryDialog;
     }
 

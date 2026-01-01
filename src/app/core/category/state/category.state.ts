@@ -64,6 +64,7 @@ export const CategoryStore = signalStore(
                             .pipe(
                                 // after create, reload categories
                                 switchMap(() => {
+                                    transactionStore.recalculateTransactionsCategories({bank: category.bankName});
                                     transactionStore.loadTransactions({});
                                     return reloadCategories$()
                                 })
@@ -79,6 +80,7 @@ export const CategoryStore = signalStore(
                             .pipe(
                                 // after update, reload categories
                                 switchMap(() => {
+                                    transactionStore.recalculateTransactionsCategories({bank: category.bankName});
                                     transactionStore.loadTransactions({});
                                     return reloadCategories$()
                                 })
