@@ -35,3 +35,19 @@
     display: flex;
     justify-content: flex-end;
 }
+
+/* wrapper around the fieldset */
+.tcs-fieldset-wrapper {
+    position: relative;
+    display: inline-block; /* or block, depending on your layout */
+    width: 100%;
+}
+
+/* button visually in the header's right side */
+.tcs-fieldset-header-button {
+    position: absolute;
+    right: 0.75rem;
+    top: 0;                 /* start at top border */
+    transform: translateY(-50%); /* move it up so it sits in the legend area */
+    z-index: 1;
+}

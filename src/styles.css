@@ -212,6 +212,10 @@ fieldset p-chart canvas {
 }
 
 .p-button-sm {
-    padding-block: 0.1rem !important;
-    padding-inline: 0.1rem !important;
+    padding-block: 0.2rem !important;
+    padding-inline: 0.5rem !important;
+}
+
+.p-chip {
+    padding: 0.3rem 0.5rem !important;
 }
