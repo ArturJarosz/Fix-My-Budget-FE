@@ -39,7 +39,6 @@ export const CategoryStore = signalStore(
                         patchState(store, {categories: categoriesFromBackend});
                     })
                 );
-
         return {
             uploadFile: rxMethod<{ file: File }>(
                 pipe(
@@ -52,11 +51,9 @@ export const CategoryStore = signalStore(
                     )
                 )
             ),
-
             loadCategories: rxMethod(() => {
                 return reloadCategories$();
             }),
-
             createCategory: rxMethod<{ category: Category }>(
                 pipe(
                     switchMap(({category}) =>
@@ -71,13 +68,25 @@ export const CategoryStore = signalStore(
                     )
                 )
             ),
-
             updateCategory: rxMethod<{ category: Category }>(
                 pipe(
                     switchMap(({category}) =>
                         restService.updateCategory(category.id!, category)
                             .pipe(
                                 // after update, reload categories
+                                switchMap(() => {
+                                    transactionStore.loadTransactions({});
+                                    return reloadCategories$()
+                                })
+                            )
+                    )
+                )
+            ),
+            removeCategory: rxMethod<{ categoryId: number }>(
+                pipe(
+                    switchMap(({categoryId}) =>
+                        restService.removeCategory(categoryId)
+                            .pipe(
                                 switchMap(() => {
                                     transactionStore.loadTransactions({});
                                     return reloadCategories$()
