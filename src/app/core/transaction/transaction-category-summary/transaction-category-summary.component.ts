@@ -1,16 +1,16 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, inject, Input, OnChanges} from '@angular/core';
 import {BankTransaction, Category, TransactionType} from '../../../models/models';
 import {Fieldset} from 'primeng/fieldset';
 import {TableModule} from 'primeng/table';
-import {CurrencyPipe, NgIf} from '@angular/common';
-import {StyleClass} from "primeng/styleclass";
-import {Tag} from "primeng/tag";
-import {Button, ButtonDirective} from "primeng/button";
-import {Ripple} from "primeng/ripple";
+import {Button} from "primeng/button";
 import {EditCategoryComponent} from "../../category/edit-category/edit-category.component";
 import {AddCategoryComponent} from "../../category/add-category/add-category.component";
+import {CategoryStore} from "../../category/state/category.state";
+import {
+    TransactionCategorySummaryTableComponent
+} from "../transaction-category-summary-table/transaction-category-summary-table.component";
 
-interface CategorySummaryRow {
+export interface CategorySummaryRow {
     categoryName: string;
     transactionCount: number;
     totalAmount: number;
@@ -25,15 +25,9 @@ interface CategorySummaryRow {
     imports: [
         Fieldset,
         TableModule,
-        CurrencyPipe,
-        NgIf,
-        StyleClass,
-        Tag,
-        ButtonDirective,
-        Ripple,
         Button,
-        EditCategoryComponent,
-        AddCategoryComponent
+        AddCategoryComponent,
+        TransactionCategorySummaryTableComponent
     ],
     templateUrl: './transaction-category-summary.component.html',
     styleUrl: './transaction-category-summary.component.css'
@@ -63,11 +57,12 @@ export class TransactionCategorySummaryComponent implements OnChanges {
     incomeRows: CategorySummaryRow[] = [];
     totalIncome = 0;
     totalExpense = 0;
-    protected showEditCategoryDialog: boolean = false;
     protected showAddCategoryDialog: boolean = false;
-    categoryToEdit: Category | undefined;
 
     ngOnChanges(): void {
+        console.log("changes")
+        console.log("transactions", this.transactions.length)
+        console.log("categories", this.categories.length)
         this.recalculate();
     }
 
@@ -173,52 +168,6 @@ export class TransactionCategorySummaryComponent implements OnChanges {
         return category?.color ?? this.DEFAULT_FALLBACK_COLOR;
     }
 
-    resolveFontColor(bgColor: string | null | undefined): string {
-        if (!bgColor) {
-            return this.DEFAULT_ERROR_COLOR;
-        }
-
-        // normalize: remove '#', handle short form if needed
-        let hex = bgColor.replace('#', '')
-            .trim();
-        if (hex.length === 3) {
-            // e.g. 'abc' -> 'aabbcc'
-            hex = hex.split('')
-                .map(ch => ch + ch)
-                .join('');
-        }
-        if (hex.length !== 6) {
-            // fallback if color is not in expected format
-            return this.DEFAULT_ERROR_COLOR;
-        }
-
-        const r = parseInt(hex.substring(0, 2), 16);
-        const g = parseInt(hex.substring(2, 4), 16);
-        const b = parseInt(hex.substring(4, 6), 16);
-
-        // relative luminance (sRGB)
-        const [rl, gl, bl] = [r, g, b].map(c => {
-            const channel = c / 255;
-            return channel <= 0.03928
-                ? channel / 12.92
-                : Math.pow((channel + 0.055) / 1.055, 2.4);
-        });
-
-        const luminance = 0.2126 * rl + 0.7152 * gl + 0.0722 * bl;
-
-        // threshold: if too dark, use white; otherwise black
-        return luminance < this.FONT_COLOR_THRESHOLD ? this.LIGHT_FONT_COLOR : this.DARK_FONT_COLOR;
-    }
-
-    onCategoryEditClick(category: Category) {
-        this.categoryToEdit = category;
-        this.showEditCategoryDialog = true;
-    }
-
-    protected onNotify($event: boolean) {
-        this.showEditCategoryDialog = $event.valueOf();
-    }
-
     toggleShowAddCategoryDialog(): void {
         this.showAddCategoryDialog = true;
     }
@@ -226,4 +175,5 @@ export class TransactionCategorySummaryComponent implements OnChanges {
     protected onNotifyAdd($even: boolean) {
         this.showAddCategoryDialog = $even.valueOf();
     }
+
 }

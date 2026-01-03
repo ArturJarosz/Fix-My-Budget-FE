@@ -14,6 +14,8 @@ export abstract class CategoryRestService {
     abstract createCategory(category: Category): Observable<Category>;
 
     abstract updateCategory(categoryId: number, category: Category): Observable<Category>;
+
+    abstract removeCategory(categoryId: number): Observable<any>;
 }
 
 @Injectable()
@@ -62,6 +64,10 @@ export class CategoryRestServiceImpl implements CategoryRestService {
 
     updateCategory(categoryId: number, category: Category): Observable<Category> {
         return this.httpClient.post<Category>(`${this.categoriesUrl}/${categoryId}`, category);
+    }
+
+    removeCategory(categoryId: number): Observable<any> {
+        return this.httpClient.delete(`${this.categoriesUrl}/${categoryId}`);
     }
 
     private getFileName(header: string): string {
