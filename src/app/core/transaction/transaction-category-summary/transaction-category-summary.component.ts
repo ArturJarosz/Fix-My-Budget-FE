@@ -8,6 +8,7 @@ import {Tag} from "primeng/tag";
 import {Button, ButtonDirective} from "primeng/button";
 import {Ripple} from "primeng/ripple";
 import {EditCategoryComponent} from "../../category/edit-category/edit-category.component";
+import {AddCategoryComponent} from "../../category/add-category/add-category.component";
 
 interface CategorySummaryRow {
     categoryName: string;
@@ -31,7 +32,8 @@ interface CategorySummaryRow {
         ButtonDirective,
         Ripple,
         Button,
-        EditCategoryComponent
+        EditCategoryComponent,
+        AddCategoryComponent
     ],
     templateUrl: './transaction-category-summary.component.html',
     styleUrl: './transaction-category-summary.component.css'
@@ -62,6 +64,7 @@ export class TransactionCategorySummaryComponent implements OnChanges {
     totalIncome = 0;
     totalExpense = 0;
     protected showEditCategoryDialog: boolean = false;
+    protected showAddCategoryDialog: boolean = false;
     categoryToEdit: Category | undefined;
 
     ngOnChanges(): void {
@@ -214,5 +217,13 @@ export class TransactionCategorySummaryComponent implements OnChanges {
 
     protected onNotify($event: boolean) {
         this.showEditCategoryDialog = $event.valueOf();
+    }
+
+    toggleShowAddCategoryDialog(): void {
+        this.showAddCategoryDialog = true;
+    }
+
+    protected onNotifyAdd($even: boolean) {
+        this.showAddCategoryDialog = $even.valueOf();
     }
 }

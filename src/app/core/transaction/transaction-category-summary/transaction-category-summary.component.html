@@ -97,6 +97,18 @@
             </div>
         </div>
     </div>
+    <div class="light:bg-surface-950 flex gap-3 py-1">
+        <div class="border border-surface rounded-2xl flex-1 p-3 w-full flex flex-col justify-center items-center">
+            <p-button
+                    mode="basic"
+                    icon="pi pi-plus"
+                    label="Add new category"
+                    size="large"
+                    (click)="toggleShowAddCategoryDialog()"
+            ></p-button>
+        </div>
+    </div>
+
     <ng-template #noData>
         <div class="tcs-empty">
             No transactions to summarize.
@@ -111,3 +123,11 @@
         [fieldTypes]="fieldTypes"
         (notify)="onNotify($event)"
 ></edit-category>
+<div>
+    <add-category
+            [visible]="showAddCategoryDialog"
+            [banks]="banks"
+            [matchTypes]="matchTypes"
+            [fieldTypes]="fieldTypes"
+            (notify)="onNotifyAdd($event)"></add-category>
+</div>
