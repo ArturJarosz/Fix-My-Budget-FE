@@ -123,17 +123,15 @@
                         (mouseleave)="onFilterCellHover('category', false)"
                         (click)="onFilterCellClick('category', transaction.category, $event)">
                         <p-tag
-                                pStyleClass="font-medium"
-                                data-p="success"
-                                class="font-medium p-component p-tag p-tag-success"
-                                [style.backgroundColor]="resolveColor(transaction.category)"
-                                [style.borderColor]="resolveColor(transaction.category)"
-                                [style.color]="resolveFontColor(resolveColor(transaction.category))"
-                                data-pc-section="root"
-                                data-pc-name="t">
-                                <span class="p-tag-label" data-pc-section="label">
-                                    {{ transaction.category }}
-                                </span>
+                            pStyleClass="font-medium"
+                            data-p="success"
+                            class="font-medium p-component p-tag p-tag-success"
+                            [ngStyle]="getCategoryStyles(transaction)"
+                            data-pc-section="root"
+                            data-pc-name="t">
+                            <span class="p-tag-label" data-pc-section="label">
+                                {{ transaction.category }}
+                            </span>
                         </p-tag>
                     </td>
                     <td class="tx-clickable-cell"

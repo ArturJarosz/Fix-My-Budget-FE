@@ -1,25 +1,38 @@
 <div>
-    <div class="bg-surface-0 px-3 py-1 rounded-2xl flex flex-col gap-3">
-        <transaction-big-chart
-                [transactions]="$transactions()"
-                [categories]="$categories()">
-        </transaction-big-chart>
-    </div>
-    <div class="bg-surface-0 px-3 py-1 rounded-2xl flex flex-col gap-3">
-        <transaction-category-summary
-                [transactions]="$transactions()"
-                [categories]="$categories()"
-                [banks]="$banks()"
-                [matchTypes]="$matchTypes()"
-                [fieldTypes]="$fieldTypes()">
-        </transaction-category-summary>
-    </div>
-    <div class="px-3 py-1 light:bg-surface-950 flex gap-3 full-width">
-        <transaction-list
-                [transactions]="$transactions()"
-                [categories]="$categories()"
-        ></transaction-list>
-    </div>
-
+    <p-tabs class="p-2">
+        <p-tablist>
+            @for (bank of Object.keys(this.banksSummaryData); track bank) {
+                <p-tab [value]="bank">{{bank}}</p-tab>
+            }
+        </p-tablist>
+        <p-tabpanels>
+            @for (bank of Object.keys(this.banksSummaryData); track bank) {
+                <p-tabpanel [value]="bank">
+                    <div class="bg-surface-0 px-3 py-1 rounded-2xl flex flex-col gap-3">
+                        <transaction-big-chart
+                                [transactions]="this.banksSummaryData[bank].transactions"
+                                [categories]="this.banksSummaryData[bank].categories">
+                        </transaction-big-chart>
+                    </div>
+                    <div class="bg-surface-0 px-3 py-1 rounded-2xl flex flex-col gap-3">
+                        <transaction-category-summary
+                                [bankName]="bank"
+                                [categoriesSummaryByType]="this.banksSummaryData[bank].categoriesSummary"
+                                [categories]="this.banksSummaryData[bank].categories"
+                                [banks]="$banks()"
+                                [matchTypes]="$matchTypes()"
+                                [fieldTypes]="$fieldTypes()">
+                        </transaction-category-summary>
+                    </div>
+                    <div class="px-3 py-1 light:bg-surface-950 flex gap-3 full-width">
+                        <transaction-list
+                                [transactions]="this.banksSummaryData[bank].transactions"
+                                [categories]="this.banksSummaryData[bank].categories"
+                        ></transaction-list>
+                    </div>
+                </p-tabpanel>
+            }
+        </p-tabpanels>
+    </p-tabs>
 </div>
 

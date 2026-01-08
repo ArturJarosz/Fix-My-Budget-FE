@@ -1,4 +1,4 @@
-import {AnalyzedStatement, BankTransaction} from "../../../models/models";
+import {AnalyzedStatement, BankTransaction, TransactionsSummary} from "../../../models/models";
 import {patchState, signalStore, withMethods, withState} from "@ngrx/signals";
 import {inject} from "@angular/core";
 import {TransactionGraphqlService} from "../graphql/graphql-service";
@@ -9,11 +9,16 @@ import {TransactionRestService} from "../rest/transaction-rest.service";
 export interface TransactionState {
     transactions: BankTransaction[];
     analyzedStatement?: AnalyzedStatement;
+    transactionsSummary: TransactionsSummary;
 }
 
 export const initialState: TransactionState = {
     transactions: [],
-    analyzedStatement: undefined
+    analyzedStatement: undefined,
+    transactionsSummary: {
+        categorySummaryByTypeByBank: {},
+        allBanksCategorySummaries: {},
+    }
 }
 
 export const TransactionStore = signalStore(
@@ -31,29 +36,42 @@ export const TransactionStore = signalStore(
             }
             return {
                 loadTransactions: rxMethod<{}>(
-                pipe(
-                    switchMap(() => {
-                        return graphQlService.getTransactions()
-                            .pipe(
-                                tap(bankTransactions => {
-                                    patchState(store, {transactions: bankTransactions})
-                                })
-                            );
-                    })
+                    pipe(
+                        switchMap(() => {
+                            return graphQlService.getTransactions()
+                                .pipe(
+                                    tap(bankTransactions => {
+                                        patchState(store, {transactions: bankTransactions})
+                                    })
+                                );
+                        })
+                    )
+                ),
+                recalculateTransactionsCategories: rxMethod<{ bank: string }>(
+                    pipe(
+                        switchMap((params) => {
+                            return restService.recalculateTransactionCategories(params.bank)
+                                .pipe(
+                                    tap(() => {
+                                        reloadTransactions$();
+                                    })
+                                );
+                        })
+                    )
+                ),
+                loadTransactionsSummary: rxMethod<{}>(
+                    pipe(
+                        switchMap(() => {
+                            return restService.getTransactionsSummary()
+                                .pipe(
+                                    tap(summary => {
+                                        patchState(store, {transactionsSummary: summary})
+                                    })
+                                );
+                        })
+                    )
                 )
-            ),
-            recalculateTransactionsCategories: rxMethod<{bank: string}>(
-                pipe(
-                    switchMap((params) => {
-                        return restService.recalculateTransactionCategories(params.bank)
-                            .pipe(
-                                tap(() => {
-                                    reloadTransactions$();
-                                })
-                            );
-                    })
-                )
-            )}
+            }
 
         })
 )

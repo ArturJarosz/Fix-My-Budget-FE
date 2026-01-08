@@ -36,6 +36,9 @@ export const CategoryStore = signalStore(
             restService.getCategories()
                 .pipe(
                     tap(categoriesFromBackend => {
+                        categoriesFromBackend.forEach(category => {
+                            category.fontColor = resolveFontColor(category.color);
+                        });
                         patchState(store, {categories: categoriesFromBackend});
                     })
                 );
@@ -46,7 +49,11 @@ export const CategoryStore = signalStore(
                         restService.uploadCategoriesFile(file)
                             .pipe(
                                 // after upload, reload categories
-                                switchMap(() => reloadCategories$())
+                                switchMap(() => {
+                                        transactionStore.loadTransactionsSummary({});
+                                        return reloadCategories$()
+                                    }
+                                )
                             )
                     )
                 )
@@ -62,6 +69,7 @@ export const CategoryStore = signalStore(
                                 // after creation, reload categories
                                 switchMap(() => {
                                     transactionStore.loadTransactions({});
+                                    transactionStore.loadTransactionsSummary({});
                                     return reloadCategories$()
                                 })
                             )
@@ -76,6 +84,7 @@ export const CategoryStore = signalStore(
                                 // after update, reload categories
                                 switchMap(() => {
                                     transactionStore.loadTransactions({});
+                                    transactionStore.loadTransactionsSummary({});
                                     return reloadCategories$()
                                 })
                             )
@@ -89,6 +98,7 @@ export const CategoryStore = signalStore(
                             .pipe(
                                 switchMap(() => {
                                     transactionStore.loadTransactions({});
+                                    transactionStore.loadTransactionsSummary({});
                                     return reloadCategories$()
                                 })
                             )
@@ -98,3 +108,39 @@ export const CategoryStore = signalStore(
         };
     })
 );
+
+function resolveFontColor(bgColor: string | null | undefined): string {
+    if (!bgColor) {
+        return '#000000';
+    }
+
+    // normalize: remove '#', handle short form if needed
+    let hex = bgColor.replace('#', '')
+        .trim();
+    if (hex.length === 3) {
+        // e.g. 'abc' -> 'aabbcc'
+        hex = hex.split('')
+            .map(ch => ch + ch)
+            .join('');
+    }
+    if (hex.length !== 6) {
+        return '#000000';
+    }
+
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    // relative luminance (sRGB)
+    const [rl, gl, bl] = [r, g, b].map(c => {
+        const channel = c / 255;
+        return channel <= 0.03928
+            ? channel / 12.92
+            : Math.pow((channel + 0.055) / 1.055, 2.4);
+    });
+
+    const luminance = 0.2126 * rl + 0.7152 * gl + 0.0722 * bl;
+
+    // threshold: if too dark, use white; otherwise black
+    return luminance < 0.5 ? '#FFFFFF' : '#000000';
+}

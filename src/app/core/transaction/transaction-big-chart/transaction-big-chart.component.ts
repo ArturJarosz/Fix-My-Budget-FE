@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fieldset} from 'primeng/fieldset';
 import {ChartModule} from 'primeng/chart';
 import {ButtonModule} from 'primeng/button';
-import {BankTransaction, Category, TransactionType} from '../../../models/models';
+import {BankTransaction, Category, TransactionsCategorySummariesByType, TransactionType} from '../../../models/models';
 import {NgIf} from "@angular/common";
 
 type TimeGrouping = 'YEARS' | 'MONTHS' | 'WEEKS';
@@ -27,7 +27,6 @@ interface TimeBucket {
 export class TransactionBigChartComponent implements OnChanges {
     @Input()
     transactions!: BankTransaction[];
-
     @Input()
     categories!: Category[];
 
