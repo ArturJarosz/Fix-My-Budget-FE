@@ -1,7 +1,6 @@
 export enum TransactionType {
     INCOME = 'INCOME',
     EXPENSE = 'EXPENSE'
-
 }
 
 export interface BankTransaction {
@@ -61,6 +60,7 @@ export interface Category {
     name: string;
     bankName: string;
     color: string;
+    fontColor?: string;
     requirements: CategoryRequirement[];
 }
 
@@ -88,6 +88,27 @@ export interface CategoryNode {
     value?: string;
 }
 
+export interface TransactionsCategorySummary {
+    name: string;
+    count: number;
+    totalAmount: string; // BigDecimal is usually serialized as string
+    type: TransactionType;
+}
 
+export interface TransactionsSummary {
+    categorySummaryByTypeByBank: {
+        [bank: string]: TransactionsCategorySummariesByType;
+    };
+    allBanksCategorySummaries: TransactionsCategorySummariesByType;
+}
 
+export type TransactionsCategorySummariesByType = {
+    [type in TransactionType]?: TransactionsCategorySummary[];
+};
+
+export type BankSummaryData = {
+    categoriesSummary: TransactionsCategorySummariesByType;
+    transactions: BankTransaction[];
+    categories: Category[];
+}
 

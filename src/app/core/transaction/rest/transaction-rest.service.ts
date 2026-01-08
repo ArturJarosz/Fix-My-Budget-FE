@@ -3,10 +3,13 @@ import {Observable, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MessageService} from "primeng/api";
 import {environment} from "../../../../environments/environment";
+import {TransactionsSummary} from "../../../models/models";
 
 export abstract class TransactionRestService {
 
     abstract recalculateTransactionCategories(bank: string): Observable<Object>;
+
+    abstract getTransactionsSummary(): Observable<TransactionsSummary>;
 }
 
 @Injectable()
@@ -19,6 +22,10 @@ export class TransactionRestServiceImpl extends TransactionRestService {
 
     recalculateTransactionCategories(bank: string): Observable<Object> {
         return this.httpClient.post(this.transactionsUrl + '/calculate-categories', {bank: bank})
+    }
+
+    getTransactionsSummary(): Observable<TransactionsSummary> {
+        return this.httpClient.get<TransactionsSummary>(this.transactionsUrl + '/summary');
     }
 
     handleError(error: HttpErrorResponse, messageService: MessageService, title: string) {

@@ -1,4 +1,4 @@
-<div class="p-1" *ngIf="rows.length; else noData">
+<div class="p-1" *ngIf="rows; else noData">
     <p-table
             [value]="rows"
             stripedRows
@@ -7,35 +7,35 @@
             styleClass="w-full">>
         <ng-template pTemplate="header" class="font-medium full-width">
             <tr class="font-medium full-width">
-                <th>Expanse Category ({{ rows.length}})</th>
-                <th>Transactions</th>
-                <th class="tcs-header">Sum</th>
+                <th>{{ this.pageTitle }} ({{ rows.length}})</th>
+                <th class="tcs-cell-center">Transactions</th>
+                <th class="tcs-header tcs-cell-center">Sum</th>
                 <th>Menu</th>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-row>
             <tr class="text-sm font-medium leading-tight dark:text-surface-0 text-muted-color">
-                <td>
+                <td style="width: 20rem">
                     <p-tag
                             pStyleClass="font-medium"
                             data-p="success"
                             class="font-medium p-component p-tag p-tag-success"
-                            [style.backgroundColor]="resolveColor(row.categoryName)"
-                            [style.borderColor]="resolveColor(row.categoryName)"
-                            [style.color]="resolveFontColor(resolveColor(row.categoryName))"
+                            [style.backgroundColor]="resolveColor(row.name)"
+                            [style.borderColor]="resolveColor(row.name)"
+                            [style.color]="resolveFontColor(row.name)"
                             data-pc-section="root"
                             data-pc-name="t">
                         <span class="p-tag-label" data-pc-section="label"
-                        >{{ row.categoryName }}</span></p-tag>
+                        >{{ row.name }}</span></p-tag>
                 </td>
-                <td style="width: 7rem" class="tcs-cell-number">{{ row.transactionCount }}</td>
-                <td class="tcs-cell-number">
+                <td style="width: 6rem" class="tcs-cell-center py-2">{{ row.count }}</td>
+                <td style="width: 6rem" class="tcs-cell-number tcs-cell-right py-2">
                     {{ row.totalAmount | currency: ' ':'code':'2.2-2'}}
                 </td>
-                <td style="width: 5rem; text-align: center;">
-                    <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-pencil" size="small" variant="text" severity="success" (click)="onCategoryEditClick(row.category)"></p-button>
-                    <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-times" size="small" variant="text" severity="warn" (click)="onRemoveCategoryClicked(row.category.id)"></p-button>
+                <td style="width: 3rem; text-align: center;">
+                    <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-pencil" size="small" variant="text" severity="success" (click)="onCategoryEditClick(row.name)"></p-button>
+                    <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-times" size="small" variant="text" severity="warn" (click)="onRemoveCategoryClicked(row.name)"></p-button>
                 </td>
             </tr>
         </ng-template>
