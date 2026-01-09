@@ -77,6 +77,7 @@ export const GET_TRANSACTIONS = gql`
             amount
             transactionDate
             category
+            categoryOverridden
             transactionType
             details
             recipientName

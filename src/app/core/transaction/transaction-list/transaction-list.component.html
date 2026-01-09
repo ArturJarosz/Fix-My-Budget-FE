@@ -12,7 +12,7 @@
                  scrollHeight="1000px"
                  class="font-medium"
                  styleClass="w-full">
-            <ng-template pTemplate="header"  class="font-medium">
+            <ng-template pTemplate="header" class="font-medium">
                 <tr class="font-medium">
                     <th pSortableColumn>
                         ID
@@ -35,6 +35,8 @@
                     <th>Sender name</th>
                     <th>Bank</th>
                     <th>Source</th>
+                    <th>Overriden</th>
+                    <th>Menu</th>
                 </tr>
                 <tr class="font-medium">
                     <th></th>
@@ -100,9 +102,11 @@
                                 filterOn="input">
                         </p-columnFilter>
                     </th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </ng-template>
-            <ng-template let-transaction pTemplate="body"  class="font-medium">
+            <ng-template let-transaction pTemplate="body" class="font-medium">
                 <tr class="text-sm font-medium leading-tight dark:text-surface-0 text-muted-color">
                     <td style="width: 3rem">#{{ transaction.id }}</td>
                     <td style="width: 4rem">
@@ -123,12 +127,12 @@
                         (mouseleave)="onFilterCellHover('category', false)"
                         (click)="onFilterCellClick('category', transaction.category, $event)">
                         <p-tag
-                            pStyleClass="font-medium"
-                            data-p="success"
-                            class="font-medium p-component p-tag p-tag-success"
-                            [ngStyle]="getCategoryStyles(transaction)"
-                            data-pc-section="root"
-                            data-pc-name="t">
+                                pStyleClass="font-medium"
+                                data-p="success"
+                                class="font-medium p-component p-tag p-tag-success"
+                                [ngStyle]="getCategoryStyles(transaction)"
+                                data-pc-section="root"
+                                data-pc-name="t">
                             <span class="p-tag-label" data-pc-section="label">
                                 {{ transaction.category }}
                             </span>
@@ -164,8 +168,21 @@
                         (click)="onFilterCellClick('source', transaction.source, $event)">
                         {{ transaction.source }}
                     </td>
+                    <td>
+                        <div class="text-center">{{ transaction.categoryOverridden ? 'Yes' : 'No' }}</div>
+                    </td>
+                    <td style="width: 3rem; text-align: center;">
+                        <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-refresh" size="small" variant="text" severity="success" (click)="onOverrideCategory(transaction)"></p-button>
+                    </td>
                 </tr>
             </ng-template>
         </p-table>
     </div>
 </p-fieldset>
+<override-transaction-category
+        [visible]="this.showOverrideCategoryDialog"
+        [categories]="this.categories"
+        [transaction]="this.transactionToEdit"
+        (notify)="onNotify($event)"
+>
+</override-transaction-category>
