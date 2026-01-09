@@ -3,20 +3,23 @@ import {Observable, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MessageService} from "primeng/api";
 import {environment} from "../../../../environments/environment";
-import {TransactionsSummary} from "../../../models/models";
+import {BankTransaction, BankTransactionCategoryOverride, TransactionsSummary} from "../../../models/models";
 
 export abstract class TransactionRestService {
 
     abstract recalculateTransactionCategories(bank: string): Observable<Object>;
 
     abstract getTransactionsSummary(): Observable<TransactionsSummary>;
+
+    abstract overrideTransactionCategory(transactionId: number,
+                                         override: BankTransactionCategoryOverride): Observable<BankTransaction>;
 }
 
 @Injectable()
 export class TransactionRestServiceImpl extends TransactionRestService {
     private transactionsUrl = `${environment.apiUrl}/api/bank-transactions`;
 
-    constructor(private httpClient:HttpClient) {
+    constructor(private httpClient: HttpClient) {
         super();
     }
 
@@ -26,6 +29,13 @@ export class TransactionRestServiceImpl extends TransactionRestService {
 
     getTransactionsSummary(): Observable<TransactionsSummary> {
         return this.httpClient.get<TransactionsSummary>(this.transactionsUrl + '/summary');
+    }
+
+    overrideTransactionCategory(transactionId: number,
+                                override: BankTransactionCategoryOverride): Observable<BankTransaction> {
+        return this.httpClient.post<BankTransaction>(`${this.transactionsUrl}/${transactionId}/override-category`, {
+            "categoryName": override.categoryName, override: override.override
+        });
     }
 
     handleError(error: HttpErrorResponse, messageService: MessageService, title: string) {

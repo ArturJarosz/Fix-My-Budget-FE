@@ -1,0 +1,86 @@
+<p-dialog header="Override Transaction Category"
+          [(visible)]="visible"
+          [modal]="true"
+          [style]="{width: '50vw'}"
+          (onHide)="onClose()">
+    <ng-template pTemplate="header">
+        <div class="flex flex-col gap-2">
+            <h1 class="m-0 text-900 font-semibold line-height-3">Override transaction category</h1>
+        </div>
+    </ng-template>
+    <div>
+        <form [formGroup]="overrideCategoryForm">
+            <!-- main container: vertical stack of rows -->
+            <div class="flex flex-col gap-4">
+
+                <!-- Row 1: details + amount -->
+                <div class="flex gap-3 pt-4">
+                    <div class="flex flex-col gap-1 flex-1">
+                        <label for="details" class="block px-1">Details</label>
+                        <div class="px-3 py-2 border-round surface-100">
+                            {{ overrideCategoryForm.get('details')?.value }}
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1 flex-1">
+                        <label for="amount" class="block px-1">Amount</label>
+                        <div class="px-3 py-2 border-round surface-100">
+                            {{ overrideCategoryForm.get('amount')?.value }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: recipient + sender -->
+                <div class="flex gap-3">
+                    <div class="flex flex-col gap-1 flex-1">
+                        <label for="recipient" class="block px-1">Recipient</label>
+                        <div class="px-3 py-2 border-round surface-100">
+                            {{ overrideCategoryForm.get('recipient')?.value }}
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1 flex-1">
+                        <label for="sender" class="block px-1">Sender</label>
+                        <div class="px-3 py-2 border-round surface-100">
+                            {{ overrideCategoryForm.get('sender')?.value }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: category name + override -->
+                <div class="flex gap-3">
+                    <div class="flex flex-col gap-1 flex-1">
+                        <label for="categoryName" class="block px-1">Category name</label>
+                        <p-select
+                                formControlName="categoryName"
+                                [options]="categories"
+                                optionLabel="name"
+                                optionValue="name"
+                                appendTo="body"
+                                class="w-full"
+                                (onChange)="onChangeCategoryEvent()">
+                        </p-select>
+                    </div>
+                    <div class="flex flex-col gap-1 flex-1">
+                        <label for="override" class="block px-1">Override</label>
+                        <div class="flex align-items-center" style="height: 100%;">
+                            <p-inputSwitch
+                                    formControlName="override"
+                                    id="override"
+                                    class="py-1">
+                            </p-inputSwitch>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 4: button -->
+                <div class="flex justify-content-end pt-3">
+                    <p-button styleClass="add-button"
+                              (click)="onSave()"
+                              [disabled]="!isDataCorrect()">
+                        Override category
+                    </p-button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</p-dialog>

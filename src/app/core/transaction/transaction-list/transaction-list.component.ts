@@ -5,6 +5,11 @@ import {CurrencyPipe, NgClass, NgIf, NgStyle} from "@angular/common";
 import {Tag} from "primeng/tag";
 import {StyleClass} from "primeng/styleclass";
 import {Fieldset} from "primeng/fieldset";
+import {
+    OverrideTransactionCategoryComponent
+} from "../override-transaction-category/override-transaction-category.component";
+import {Button, ButtonDirective} from "primeng/button";
+import {Ripple} from "primeng/ripple";
 
 @Component({
     selector: 'transaction-list',
@@ -17,7 +22,11 @@ import {Fieldset} from "primeng/fieldset";
         NgIf,
         Fieldset,
         NgClass,
-        NgStyle
+        NgStyle,
+        OverrideTransactionCategoryComponent,
+        Button,
+        ButtonDirective,
+        Ripple
     ],
     styleUrl: './transaction-list.component.less'
 })
@@ -31,6 +40,10 @@ export class TransactionListComponent {
 
     /** which filter field is currently hovered in the body cells */
     hoveredField: string | null = null;
+
+    transactionToEdit!: BankTransaction;
+
+    showOverrideCategoryDialog: boolean = false;
 
     constructor(private elRef: ElementRef<HTMLElement>) {
     }
@@ -85,5 +98,15 @@ export class TransactionListComponent {
             'border-color': backgroundColor,
             'color': fontColor
         };
+    }
+
+    protected onOverrideCategory(transaction: BankTransaction) {
+        console.log('Override category for transaction:', JSON.stringify(transaction));
+        this.transactionToEdit = transaction;
+        this.showOverrideCategoryDialog = true;
+    }
+
+    protected onNotify($event: boolean) {
+        this.showOverrideCategoryDialog = $event;
     }
 }

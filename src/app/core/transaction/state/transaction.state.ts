@@ -1,9 +1,14 @@
-import {AnalyzedStatement, BankTransaction, TransactionsSummary} from "../../../models/models";
+import {
+    AnalyzedStatement,
+    BankTransaction,
+    BankTransactionCategoryOverride,
+    TransactionsSummary
+} from "../../../models/models";
 import {patchState, signalStore, withMethods, withState} from "@ngrx/signals";
 import {inject} from "@angular/core";
 import {TransactionGraphqlService} from "../graphql/graphql-service";
 import {rxMethod} from "@ngrx/signals/rxjs-interop";
-import {pipe, switchMap, tap} from "rxjs";
+import {forkJoin, pipe, switchMap, tap} from "rxjs";
 import {TransactionRestService} from "../rest/transaction-rest.service";
 
 export interface TransactionState {
@@ -30,10 +35,19 @@ export const TransactionStore = signalStore(
                 return graphQlService.getTransactions()
                     .pipe(
                         tap(bankTransactions => {
-                            patchState(store, {transactions: bankTransactions})
+                            patchState(store, { transactions: bankTransactions });
                         })
                     );
-            }
+            };
+
+            const loadTransactionsSummary$ = () => {
+                return restService.getTransactionsSummary()
+                    .pipe(
+                        tap(transactionsSummary => {
+                            patchState(store, { transactionsSummary: transactionsSummary });
+                        })
+                    );
+            };
             return {
                 loadTransactions: rxMethod<{}>(
                     pipe(
@@ -53,7 +67,7 @@ export const TransactionStore = signalStore(
                             return restService.recalculateTransactionCategories(params.bank)
                                 .pipe(
                                     tap(() => {
-                                        reloadTransactions$();
+                                        switchMap(() => reloadTransactions$());
                                     })
                                 );
                         })
@@ -69,6 +83,25 @@ export const TransactionStore = signalStore(
                                     })
                                 );
                         })
+                    )
+                ),
+                overrideTransactionCategory: rxMethod<{
+                    transactionId: number;
+                    override: BankTransactionCategoryOverride;
+                }>(
+                    pipe(
+                        switchMap((params) =>
+                            restService
+                                .overrideTransactionCategory(params.transactionId, params.override)
+                                .pipe(
+                                    switchMap(() =>
+                                        forkJoin([
+                                            reloadTransactions$(),
+                                            loadTransactionsSummary$()
+                                        ])
+                                    )
+                                )
+                        )
                     )
                 )
             }

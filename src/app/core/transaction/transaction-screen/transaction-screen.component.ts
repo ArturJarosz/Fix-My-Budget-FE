@@ -42,10 +42,10 @@ export class TransactionScreenComponent implements OnInit {
         effect(() => {
             this.transactionStore.loadTransactions({});
             this.categoryStore.loadCategories({});
-            this.configurationStore.loadConfiguration({});
         });
         effect(() => {
             let banks = this.$banks();
+            console.log('Banks loaded:', banks);
             let transactionSummaries = this.$transactionsSummary();
             let categories = this.$categories();
             this.preparePerBankData();
@@ -64,6 +64,7 @@ export class TransactionScreenComponent implements OnInit {
         this.banksSummaryData = {};
         this.$banks()
             .forEach((bank) => {
+                console.log('Processing bank:', bank);
                 let bankTransactions = this.$transactions()
                     .filter((transaction) => transaction.bank === bank);
                 if (bankTransactions && bankTransactions.length > 0) {

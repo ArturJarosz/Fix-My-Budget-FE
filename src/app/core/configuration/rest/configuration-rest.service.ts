@@ -15,7 +15,6 @@ export class ConfigurationRestServiceImpl implements ConfigurationRestService {
     constructor(private httpClient: HttpClient) {
     }
 
-
     getConfiguration(): Observable<ApplicationConfiguration> {
         return this.httpClient.get<ApplicationConfiguration>(this.getConfigurationUrl)
             .pipe(

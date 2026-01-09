@@ -34,8 +34,10 @@
                     {{ row.totalAmount | currency: ' ':'code':'2.2-2'}}
                 </td>
                 <td style="width: 3rem; text-align: center;">
-                    <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-pencil" size="small" variant="text" severity="success" (click)="onCategoryEditClick(row.name)"></p-button>
-                    <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-times" size="small" variant="text" severity="warn" (click)="onRemoveCategoryClicked(row.name)"></p-button>
+                    <div *ngIf="row.name != 'UNCATEGORIZED'">
+                        <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-pencil" size="small" variant="text" severity="success" (click)="onCategoryEditClick(row.name)"></p-button>
+                        <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-times" size="small" variant="text" severity="warn" (click)="onRemoveCategoryClicked(row.name)"></p-button>
+                    </div>
                 </td>
             </tr>
         </ng-template>

@@ -112,3 +112,8 @@ export type BankSummaryData = {
     categories: Category[];
 }
 
+export type BankTransactionCategoryOverride = {
+    categoryName: string;
+    override: boolean;
+}
+
