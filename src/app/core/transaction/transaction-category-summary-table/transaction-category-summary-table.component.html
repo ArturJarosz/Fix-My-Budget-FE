@@ -1,39 +1,44 @@
 <div class="p-1" *ngIf="rows; else noData">
     <p-table
             [value]="rows"
+            [reorderableColumns]="true"
             stripedRows
-            [tableStyle]="{'width': '100%; max-height: 50%'}"
+            [tableStyle]="{'width': '100%', 'max-height': '50%'}"
             class="font-medium full-width"
             styleClass="w-full">>
         <ng-template pTemplate="header" class="font-medium full-width">
             <tr class="font-medium full-width">
-                <th>{{ this.pageTitle }} ({{ rows.length}})</th>
+                <th>{{ this.pageTitle }} ({{ rows.length }})</th>
                 <th class="tcs-cell-center">Transactions</th>
                 <th class="tcs-header tcs-cell-center">Sum</th>
                 <th>Menu</th>
             </tr>
         </ng-template>
 
-        <ng-template pTemplate="body" let-row>
-            <tr class="text-sm font-medium leading-tight dark:text-surface-0 text-muted-color">
-                <td style="width: 20rem">
+        <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+            <tr
+                    [pReorderableRow]="rowIndex"
+                    class="text-sm font-medium leading-tight dark:text-surface-0 text-muted-color">
+                <td style="width: 20rem" pReorderableColumn>
                     <p-tag
-                            pStyleClass="font-medium"
-                            data-p="success"
-                            class="font-medium p-component p-tag p-tag-success"
+                            pReorderableRowHandle
+                            class="font-medium p-component p-tag p-tag-success drag-handle"
                             [style.backgroundColor]="resolveColor(row.name)"
                             [style.borderColor]="resolveColor(row.name)"
                             [style.color]="resolveFontColor(row.name)"
+                            data-p="success"
                             data-pc-section="root"
                             data-pc-name="t">
-                        <span class="p-tag-label" data-pc-section="label"
-                        >{{ row.name }}</span></p-tag>
+                        <span class="p-tag-label" data-pc-section="label">
+                            {{ row.name }}
+                        </span>
+                    </p-tag>
                 </td>
                 <td style="width: 6rem" class="tcs-cell-center py-2">{{ row.count }}</td>
-                <td style="width: 6rem" class="tcs-cell-number tcs-cell-right py-2">
-                    {{ row.totalAmount | currency: ' ':'code':'2.2-2'}}
+                <td style="width: 6rem" class="tcs-cell-number tcs-cell-right cell-spacing" pStyleClass="py-2">
+                    {{ row.totalAmount | currency: ' ':'code':'2.2-2' }}
                 </td>
-                <td style="width: 3rem; text-align: center;">
+                <td style="width: 4rem; text-align: center;">
                     <div *ngIf="row.name != 'UNCATEGORIZED'">
                         <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-pencil" size="small" variant="text" severity="success" (click)="onCategoryEditClick(row.name)"></p-button>
                         <p-button pButton pRipple class="p-button-text p-button-plain p-0 " icon="pi pi-times" size="small" variant="text" severity="warn" (click)="onRemoveCategoryClicked(row.name)"></p-button>
@@ -46,8 +51,6 @@
     <div class="tcs-summary-footer p-2">
         <div>Expense total: {{ total | currency: ' ':'code':'2.2-2'}}</div>
     </div>
-
-
 </div>
 <ng-template #noData>
     <div class="tcs-empty">
