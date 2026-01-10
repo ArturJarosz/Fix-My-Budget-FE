@@ -18,10 +18,10 @@ import {EditCategoryComponent} from "../../category/edit-category/edit-category.
         TableModule,
         NgIf,
         Tag,
-        StyleClass,
         ButtonDirective,
         Ripple,
-        EditCategoryComponent
+        EditCategoryComponent,
+        StyleClass
     ],
     templateUrl: './transaction-category-summary-table.component.html',
     styleUrl: './transaction-category-summary-table.component.css'
@@ -79,5 +79,4 @@ export class TransactionCategorySummaryTableComponent {
         let categoryToRemove = this.categories.find(c => c.name === categoryName);
         this.categoryStore.removeCategory({ categoryId: categoryToRemove!.id! });
     }
-
 }
