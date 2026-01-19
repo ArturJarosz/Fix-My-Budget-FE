@@ -62,6 +62,8 @@ export interface Category {
     color: string;
     fontColor?: string;
     requirements: CategoryRequirement[];
+    ignoreInBank: boolean;
+    ignoreInSummary: boolean;
 }
 
 export interface CategoryRequirement {
@@ -115,5 +117,10 @@ export type BankSummaryData = {
 export type BankTransactionCategoryOverride = {
     categoryName: string;
     override: boolean;
+}
+
+export type CategoryIgnoreStatus = {
+    ignoreBank: boolean;
+    ignoreSummary: boolean;
 }
 

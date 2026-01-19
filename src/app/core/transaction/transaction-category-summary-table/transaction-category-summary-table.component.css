@@ -17,3 +17,8 @@
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
     padding: 0.1rem 1rem;
 }
+
+.ignored-row {
+    background-color: #d7d7dc; /* light gray */
+    color: #a5a8ac;            /* muted text */
+}

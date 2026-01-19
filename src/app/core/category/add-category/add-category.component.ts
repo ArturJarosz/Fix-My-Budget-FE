@@ -137,6 +137,8 @@ export class AddCategoryComponent implements OnInit {
             name: formValue.name,
             bankName: formValue.bankName,
             color: formValue.color,
+            ignoreInBank: false,
+            ignoreInSummary: false,
             requirements: (formValue.requirements ?? []).map(req => {
                 const requirement: CategoryRequirement = {
                     fieldType: req.fieldType,

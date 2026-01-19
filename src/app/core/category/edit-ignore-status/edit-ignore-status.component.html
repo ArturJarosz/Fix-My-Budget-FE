@@ -1,0 +1,63 @@
+<p-dialog [(visible)]="visible"
+          appendTo="body"
+          [modal]="true" [style]="{width: '70vw', 'max-width': '900px', 'min-height': '400px'}"
+          (onHide)="onClose()">
+    <ng-template pTemplate="header">
+        <div class="flex flex-column gap-2">
+            <h1 class="m-0 text-900 font-semibold line-height-3">Edit category ignore status</h1>
+        </div>
+    </ng-template>
+    <div>
+        <form [formGroup]="editIgnoreStatusForm">
+            <div class="flex flex-col gap-4">
+                <p-fieldset legend="Basic category data">
+                    <div class="flex gap-6">
+                        <div class="flex flex-col gap-1 flex-1">
+                            <label for="details" class="block px-1">Details</label>
+                            <div class="px-3 py-2 rounded-2xl border border-surface-200 value-field">
+                                {{ editIgnoreStatusForm.get('name')?.value }}
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1 flex-1">
+                            <label for="amount" class="block px-1">Amount</label>
+                            <div class="px-3 py-2 border-round rounded-2xl border border-surface-200 value-field">
+                                {{ editIgnoreStatusForm.get('bankName')?.value }}
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+                <p-fieldset legend="Ignore status">
+                    <div class="flex gap-6">
+                        <div class="flex flex-col gap-1 flex-1">
+                            <label for="override" class="block px-1">Ignore for bank</label>
+                            <div class="flex align-items-center" style="height: 100%;">
+                                <p-inputSwitch
+                                        formControlName="ignoreInBank"
+                                        id="ignoreInBank"
+                                        class="py-1">
+                                </p-inputSwitch>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1 flex-1">
+                            <label for="override" class="block px-1">Ignore for summary</label>
+                            <div class="flex align-items-center" style="height: 100%;">
+                                <p-inputSwitch
+                                        formControlName="ignoreInSummary"
+                                        id="ignoreInSummary"
+                                        class="py-1">
+                                </p-inputSwitch>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+                <div class="flex gap-3 justify-end pt-3">
+                    <p-button styleClass="add-button"
+                              [disabled]="!isSaveEnabled()"
+                              (click)="onSave()">
+                        Override category
+                    </p-button>
+                </div>
+            </div>
+        </form>
+    </div>
+</p-dialog>

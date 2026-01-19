@@ -16,6 +16,8 @@ export class CategoryFormProvider {
             name: this.formBuilder.nonNullable.control<string>(''),
             bankName: this.formBuilder.nonNullable.control<string>(''),
             color: this.formBuilder.nonNullable.control<string>('#000000'),
+            ignoreInBank: this.formBuilder.nonNullable.control<boolean>(false),
+            ignoreInSummary: this.formBuilder.nonNullable.control<boolean>(false),
             requirements: this.formBuilder.nonNullable.array<CategoryRequirementFormGroup>([])
         });
     }
@@ -37,6 +39,16 @@ export class CategoryFormProvider {
             value: this.formBuilder.nonNullable.control<string>(value?.value ?? '')
         });
     }
+
+    public createEditOverrideCategoryForm(): FormGroup<EditOverrideCategoryForm> {
+        return this.formBuilder.nonNullable.group({
+            id: this.formBuilder.nonNullable.control<number | null>(null),
+            name: this.formBuilder.nonNullable.control<string>(''),
+            bankName: this.formBuilder.nonNullable.control<string>(''),
+            ignoreInBank: this.formBuilder.nonNullable.control<boolean>(false),
+            ignoreInSummary: this.formBuilder.nonNullable.control<boolean>(false)
+        });
+    }
 }
 
 export interface AddCategoryForm {
@@ -44,6 +56,8 @@ export interface AddCategoryForm {
     name: FormControl<string>;
     bankName: FormControl<string>;
     color: FormControl<string>;
+    ignoreInBank: FormControl<boolean>;
+    ignoreInSummary: FormControl<boolean>;
     requirements: FormArray<CategoryRequirementFormGroup>;
 }
 
@@ -59,3 +73,11 @@ export type CategoryRequirementValueFormGroup = FormGroup<{
     id: FormControl<number | null>;
     value: FormControl<string>;
 }>;
+
+export interface EditOverrideCategoryForm {
+    id: FormControl<number | null>;
+    name: FormControl<string>;
+    bankName: FormControl<string>;
+    ignoreInBank: FormControl<boolean>;
+    ignoreInSummary: FormControl<boolean>;
+};

@@ -33,9 +33,6 @@ export interface CategorySummaryRow {
 export class TransactionCategorySummaryComponent implements OnChanges {
     readonly UNCATEGORIZED = 'UNCATEGORIZED';
 
-    readonly DEFAULT_ERROR_COLOR = '#000000';
-    readonly DEFAULT_FALLBACK_COLOR = '#888888';
-
     @Input()
     bankName!: string;
     @Input()
@@ -48,6 +45,10 @@ export class TransactionCategorySummaryComponent implements OnChanges {
     matchTypes!: string[];
     @Input()
     banks!: string[];
+    @Input()
+    categoriesToIgnoreInSummary: Set<String> = new Set<String>();
+
+    isSingleBank = false;
 
     totalIncome = 0;
     totalExpense = 0;
@@ -55,9 +56,11 @@ export class TransactionCategorySummaryComponent implements OnChanges {
 
     ngOnChanges(): void {
         this.recalculate();
+        this.isCategoryManyAvailable();
     }
 
     private recalculate(): void {
+        let isSummary = this.bankName == 'ALL';
         this.totalIncome = 0;
         this.totalExpense = 0;
         if (!this.categoriesSummaryByType) {
@@ -77,10 +80,19 @@ export class TransactionCategorySummaryComponent implements OnChanges {
             this.categoriesSummaryByType.EXPENSE = [];
         }
         for (const summary of this.categoriesSummaryByType.INCOME) {
-            totalIncome += Number(summary.totalAmount);
+            let category = this.categories.find(c => c.name === summary.name);
+            let shouldIgnore = isSummary ? this.categoriesToIgnoreInSummary.has(summary.name): category?.ignoreInBank;
+            if (!shouldIgnore) {
+                totalIncome += Number(summary.totalAmount);
+            }
+
         }
         for (const summary of this.categoriesSummaryByType.EXPENSE) {
-            totalExpense += Number(summary.totalAmount);
+            let category = this.categories.find(c => c.name === summary.name);
+            let shouldIgnore = isSummary ? this.categoriesToIgnoreInSummary.has(summary.name): category?.ignoreInBank;
+            if (!shouldIgnore) {
+                totalExpense += Number(summary.totalAmount);
+            }
         }
 
         for (const category of this.categories) {
@@ -103,14 +115,6 @@ export class TransactionCategorySummaryComponent implements OnChanges {
 
     }
 
-    resolveColor(categoryName?: string | null): string {
-        if (!categoryName || !this.categories) {
-            return this.DEFAULT_ERROR_COLOR;
-        }
-        const category = this.categories.find(c => c.name === categoryName);
-        return category?.color ?? this.DEFAULT_FALLBACK_COLOR;
-    }
-
     toggleShowAddCategoryDialog(): void {
         this.showAddCategoryDialog = true;
     }
@@ -120,4 +124,8 @@ export class TransactionCategorySummaryComponent implements OnChanges {
     }
 
     protected readonly TransactionType = TransactionType;
+
+    protected isCategoryManyAvailable() {
+        this.isSingleBank = this.bankName != 'ALL'
+    }
 }

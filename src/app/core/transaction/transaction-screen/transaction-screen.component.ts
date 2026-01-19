@@ -37,6 +37,7 @@ export class TransactionScreenComponent implements OnInit {
     $fieldTypes: Signal<string[]> = this.configurationStore.fieldTypes;
     $matchTypes: Signal<string[]> = this.configurationStore.matchTypes;
     banksSummaryData: Record<string, BankSummaryData> = {};
+    categoriesToIgnoreInSummary: Set<String> = new Set<String>();
 
     constructor() {
         effect(() => {
@@ -47,9 +48,9 @@ export class TransactionScreenComponent implements OnInit {
             let banks = this.$banks();
             console.log('Banks loaded:', banks);
             let transactionSummaries = this.$transactionsSummary();
-            let categories = this.$categories();
             this.preparePerBankData();
             this.prepareAllBanksData()
+            this.prepareSummaryIgnoredCategories();
         });
     }
 
@@ -64,7 +65,6 @@ export class TransactionScreenComponent implements OnInit {
         this.banksSummaryData = {};
         this.$banks()
             .forEach((bank) => {
-                console.log('Processing bank:', bank);
                 let bankTransactions = this.$transactions()
                     .filter((transaction) => transaction.bank === bank);
                 if (bankTransactions && bankTransactions.length > 0) {
@@ -77,6 +77,15 @@ export class TransactionScreenComponent implements OnInit {
                     }
                 }
             });
+    }
+
+    prepareSummaryIgnoredCategories() {
+        let categories = this.$categories();
+        for (let category of categories) {
+            if (category.ignoreInSummary) {
+                this.categoriesToIgnoreInSummary.add(category.name);
+            }
+        }
     }
 
     prepareAllBanksData() {

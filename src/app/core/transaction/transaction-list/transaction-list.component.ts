@@ -101,7 +101,6 @@ export class TransactionListComponent {
     }
 
     protected onOverrideCategory(transaction: BankTransaction) {
-        console.log('Override category for transaction:', JSON.stringify(transaction));
         this.transactionToEdit = transaction;
         this.showOverrideCategoryDialog = true;
     }

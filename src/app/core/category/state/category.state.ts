@@ -2,7 +2,7 @@ import {patchState, signalStore, withComputed, withMethods, withState} from "@ng
 import {CategoryRestService} from "../rest/category-rest.service";
 import {computed, inject} from "@angular/core";
 import {rxMethod} from "@ngrx/signals/rxjs-interop";
-import {CategoriesByBank, Category} from "../../../models/models";
+import {CategoriesByBank, Category, CategoryIgnoreStatus} from "../../../models/models";
 import {pipe, switchMap, tap} from "rxjs";
 import {TransactionStore} from "../../transaction/state/transaction.state";
 
@@ -100,6 +100,20 @@ export const CategoryStore = signalStore(
                                     transactionStore.loadTransactions({});
                                     transactionStore.loadTransactionsSummary({});
                                     return reloadCategories$()
+                                })
+                            )
+                    )
+                )
+            ),
+            updateIgnoreStatus: rxMethod<{ categoryId: number, ignoreStatus: CategoryIgnoreStatus }>(
+                pipe(
+                    switchMap(({categoryId, ignoreStatus}) =>
+                        restService.updateCategoryIgnoreStatus(categoryId, ignoreStatus)
+                            .pipe(
+                                switchMap(() => {
+                                    transactionStore.loadTransactions({});
+                                    transactionStore.loadTransactionsSummary({});
+                                    return reloadCategories$().pipe(tap(() => {}))
                                 })
                             )
                     )

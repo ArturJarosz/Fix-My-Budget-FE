@@ -1,14 +1,15 @@
 import {Component, inject, Input} from '@angular/core';
-import {CurrencyPipe, NgIf} from "@angular/common";
+import {CurrencyPipe, NgClass, NgIf} from "@angular/common";
 import {Button, ButtonDirective} from "primeng/button";
 import {TableModule} from "primeng/table";
 import {Tag} from "primeng/tag";
 import {StyleClass} from "primeng/styleclass";
 import {Ripple} from "primeng/ripple";
 import {CategorySummaryRow} from "../transaction-category-summary/transaction-category-summary.component";
-import {Category, TransactionsCategorySummary} from "../../../models/models";
+import {Category, CategoryIgnoreStatus, TransactionsCategorySummary} from "../../../models/models";
 import {CategoryStore} from "../../category/state/category.state";
 import {EditCategoryComponent} from "../../category/edit-category/edit-category.component";
+import {EditIgnoreStatusComponent} from "../../category/edit-ignore-status/edit-ignore-status.component";
 
 @Component({
     selector: 'transaction-category-summary-table',
@@ -21,7 +22,9 @@ import {EditCategoryComponent} from "../../category/edit-category/edit-category.
         ButtonDirective,
         Ripple,
         EditCategoryComponent,
-        StyleClass
+        StyleClass,
+        EditIgnoreStatusComponent,
+        NgClass
     ],
     templateUrl: './transaction-category-summary-table.component.html',
     styleUrl: './transaction-category-summary-table.component.css'
@@ -30,6 +33,8 @@ export class TransactionCategorySummaryTableComponent {
     readonly UNCATEGORIZED = 'UNCATEGORIZED';
 
     categoryStore = inject(CategoryStore);
+    @Input()
+    isSingleBank!: boolean;
     @Input()
     pageTitle!: string;
     @Input()
@@ -44,9 +49,13 @@ export class TransactionCategorySummaryTableComponent {
     rows: TransactionsCategorySummary[] = [];
     @Input()
     total = 0;
+    @Input()
+    categoriesToIgnoreInSummary: Set<String> = new Set<String>();
 
     protected showEditCategoryDialog: boolean = false;
     categoryToEdit: Category | undefined;
+    protected showUpdateIgnoreStatusDialog: boolean = false;
+    categoryToEditIgnoreStatus: Category | undefined;
 
     resolveColor(categoryName?: string | null): string {
         if (!categoryName || !this.categories) {
@@ -60,9 +69,6 @@ export class TransactionCategorySummaryTableComponent {
         if (!categoryName) {
             return '#000000';
         }
-        if ('UNCATEGORIZED' === categoryName) {
-            return '#FFFFFF';
-        }
         return this.categories.find(c => c.name === categoryName)?.fontColor!;
     }
 
@@ -71,12 +77,30 @@ export class TransactionCategorySummaryTableComponent {
         this.showEditCategoryDialog = true;
     }
 
-    protected onNotify($event: boolean) {
-        this.showEditCategoryDialog = $event.valueOf();
+    protected onNotifyEdit($event: boolean) {
+        this.showEditCategoryDialog = $event;
+    }
+
+    protected onNotifyIgnore($event: boolean) {
+        this.showUpdateIgnoreStatusDialog = $event;
     }
 
     protected onRemoveCategoryClicked(categoryName: string) {
         let categoryToRemove = this.categories.find(c => c.name === categoryName);
         this.categoryStore.removeCategory({ categoryId: categoryToRemove!.id! });
+    }
+
+    protected onUpdateIgnoreStatus(categoryName: string) {
+        this.categoryToEditIgnoreStatus = this.categories.find(c => c.name === categoryName);
+        this.showUpdateIgnoreStatusDialog = true;
+    }
+
+    isIgnoredByBank(categoryName: string): boolean {
+        if (this.isSingleBank) {
+            const category = this.categories?.find(c => c.name === categoryName);
+            return !!category && category.ignoreInBank;
+        }
+        return this.categoriesToIgnoreInSummary.has(categoryName);
+
     }
 }

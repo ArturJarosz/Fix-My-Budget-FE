@@ -8,7 +8,6 @@ import {
     CategoriesByBank,
     Category,
     CategoryNode,
-    CategoryRequirement,
     CategoryRequirementValue
 } from "../../../models/models";
 import {TreeTableModule} from "primeng/treetable";
@@ -92,14 +91,6 @@ export class CategoryScreenComponent implements OnInit {
         if ($event.files.length > 0) {
             const uploadFile = $event.files[0];
             this.categoryStore.uploadFile({file: uploadFile});
-        }
-    }
-
-    private mapRequirement(requirement: CategoryRequirement): TreeNode<CategoryNode> {
-        let children = requirement.values.map(value => this.mapValue(value));
-        return {
-            data: requirement,
-            children: children
         }
     }
 
