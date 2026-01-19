@@ -212,7 +212,7 @@ fieldset p-chart canvas {
 }
 
 .p-button-sm {
-    padding-block: 0.2rem !important;
+    padding-block: 0rem !important;
     padding-inline: 0.5rem !important;
 }
 

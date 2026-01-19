@@ -29,9 +29,12 @@ export class TransactionBigChartComponent implements OnChanges {
     transactions!: BankTransaction[];
     @Input()
     categories!: Category[];
+    @Input()
+    bankName!: string;
+    @Input()
+    categoriesToIgnoreInSummary!: Set<String>;
 
     selectedGrouping: TimeGrouping = 'MONTHS';
-
     chartData: any;
     chartOptions: any;
 
@@ -63,7 +66,7 @@ export class TransactionBigChartComponent implements OnChanges {
 
         const categoryNames = this.getAllCategoryNames();
         const bucketIndexByKey = new Map<string, number>();
-        buckets.forEach((b, idx) => bucketIndexByKey.set(b.key, idx));
+        buckets.forEach((timeBucket, idx) => bucketIndexByKey.set(timeBucket.key, idx));
 
         // Aggregate amounts:
         // bucketKey -> "income"/"expense" -> categoryName -> total
@@ -267,21 +270,15 @@ export class TransactionBigChartComponent implements OnChanges {
     }
 
     private getAllCategoryNames(): string[] {
+        let isSummary = this.bankName == 'ALL';
         const set = new Set<string>();
 
         if (this.categories) {
-            for (const c of this.categories) {
-                if (c.name) {
-                    set.add(c.name);
+            for (const category of this.categories) {
+                let shouldBeIgnored = isSummary ? this.categoriesToIgnoreInSummary.has(category.name): category.ignoreInBank;
+                if (category.name && !shouldBeIgnored) {
+                    set.add(category.name);
                 }
-            }
-        }
-
-        // Also include any categories appearing in transactions that may not be in the list
-        if (this.transactions) {
-            for (const tx of this.transactions) {
-                const name = tx.category || 'UNCATEGORIZED';
-                set.add(name);
             }
         }
 

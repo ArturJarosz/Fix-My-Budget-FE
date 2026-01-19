@@ -35,6 +35,8 @@ export class OverrideTransactionCategoryComponent implements OnChanges {
         requirements: [],
         name: 'UNCATEGORIZED',
         color: '#808080',
+        ignoreInBank: false,
+        ignoreInSummary: false,
     }
 
     overrideCategoryForm: FormGroup<TransactionCategoryOverrideForm> = this.transactionFormProvider.getOverrideTransactionCategoryForm();
@@ -86,7 +88,6 @@ export class OverrideTransactionCategoryComponent implements OnChanges {
             categoryName: this.overrideCategoryForm.value.categoryName!,
             override: this.overrideCategoryForm.value.override!
         }
-        console.log('Saving override category:', JSON.stringify(categoryOverride));
         this.transactionStore.overrideTransactionCategory(
             {transactionId: this.transaction.id, override: categoryOverride});
         this.visible = false;
@@ -104,11 +105,6 @@ export class OverrideTransactionCategoryComponent implements OnChanges {
         if (!this.visible) {
             return;
         }
-        console.log('Checking data correctness');
-        console.log('- Original category:', this.originalTransactionCategory);
-        console.log('- Form category:', this.overrideCategoryForm.controls.categoryName.value);
-        console.log('- Original override:', this.originalOverrideValue);
-        console.log('- Form override:', this.overrideCategoryForm.controls.override.value);
         return this.overrideCategoryForm.controls.categoryName.value != 'UNCATEGORIZED'
             && (this.overrideCategoryForm.controls.categoryName.value != this.originalTransactionCategory
                 || this.overrideCategoryForm.controls.override.value != this.originalOverrideValue);

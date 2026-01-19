@@ -1,7 +1,7 @@
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {map, Observable} from "rxjs";
-import {Category, FileResponse} from "../../../models/models";
+import {Category, CategoryIgnoreStatus, FileResponse} from "../../../models/models";
 import {Injectable} from "@angular/core";
 
 export abstract class CategoryRestService {
@@ -16,6 +16,8 @@ export abstract class CategoryRestService {
     abstract updateCategory(categoryId: number, category: Category): Observable<Category>;
 
     abstract removeCategory(categoryId: number): Observable<any>;
+
+    abstract updateCategoryIgnoreStatus(categoryId: number, ignoreStatus: CategoryIgnoreStatus): Observable<Category>;
 }
 
 @Injectable()
@@ -68,6 +70,10 @@ export class CategoryRestServiceImpl implements CategoryRestService {
 
     removeCategory(categoryId: number): Observable<any> {
         return this.httpClient.delete(`${this.categoriesUrl}/${categoryId}`);
+    }
+
+    updateCategoryIgnoreStatus(categoryId: number, ignoreStatus: CategoryIgnoreStatus): Observable<Category> {
+        return this.httpClient.post<Category>(`${this.categoriesUrl}/${categoryId}/ignore-status`, ignoreStatus);
     }
 
     private getFileName(header: string): string {

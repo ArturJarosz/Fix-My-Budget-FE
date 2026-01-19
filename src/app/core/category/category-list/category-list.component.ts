@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, Input } from '@angular/core';
 import {CategoriesByBank, Category} from "../../../models/models";
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from "primeng/accordion";
 import {Fieldset} from "primeng/fieldset";
@@ -23,7 +23,7 @@ import {EditCategoryComponent} from "../edit-category/edit-category.component";
         KeyValuePipe,
         NgStyle,
         ButtonDirective,
-        EditCategoryComponent
+        EditCategoryComponent,
     ],
     styleUrl: './category-list.component.css'
 })
@@ -38,7 +38,17 @@ export class CategoryListComponent {
     banks!: string[];
     @Input()
     set categoriesByBank(value: CategoriesByBank) {
-        this._categoriesByBank = value;
+        if (!value) {
+            this._categoriesByBank = value;
+            return;
+        }
+
+        this._categoriesByBank = Object.fromEntries(
+            Object.entries(value).map(([bank, categories]) => [
+                bank,
+                (categories || []).filter(category => category.name !== 'UNCATEGORIZED')
+            ])
+        ) as CategoriesByBank;
     }
     _categoriesByBank!: CategoriesByBank;
     protected readonly JSON = JSON;

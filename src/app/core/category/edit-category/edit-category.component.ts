@@ -77,7 +77,9 @@ export class EditCategoryComponent implements OnInit, OnChanges {
             name: category.name,
             bankName: category.bankName,
             color: category.color,
-            id: category.id
+            id: category.id,
+            ignoreInBank: category.ignoreInBank,
+            ignoreInSummary: category.ignoreInSummary
         });
 
         this.requirementsControl.clear();
@@ -178,6 +180,8 @@ export class EditCategoryComponent implements OnInit, OnChanges {
             bankName: formValue.bankName,
             color: formValue.color,
             id: formValue.id,
+            ignoreInBank: formValue.ignoreInBank,
+            ignoreInSummary: formValue.ignoreInSummary,
             requirements: (formValue.requirements ?? []).map(req => {
                 const requirement: CategoryRequirement = {
                     fieldType: req.fieldType,
